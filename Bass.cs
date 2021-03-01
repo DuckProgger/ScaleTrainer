@@ -8,6 +8,9 @@ namespace Scale_Trainer
 {
     class Bass : StringedConfig
     {
-        public Bass(int strings, int frets, Tuning.TuningName tuning) : base(strings, frets, tuning) { }
+        public Bass(int strings, int frets, Tuning.TuningName tuning) : base(strings, frets)
+        {
+            Tuning = new Tuning(this, tuning);
+        }
     }
 }

@@ -1,16 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Scale_Trainer
+﻿namespace Scale_Trainer
 {
-    class Guitar : StringedConfig, ITunable
+    internal class Guitar : StringedConfig
     {
-        public Tuning Tuning { get; set; } // Строй
-
-        public Guitar(int strings, int frets, Tuning.TuningName tuning) : base(strings, frets) 
+        public Guitar(int strings, int frets, Tuning.TuningName tuning) : base(strings, frets)
         {
             Tuning = new Tuning(this, tuning);
         }
