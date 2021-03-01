@@ -6,17 +6,18 @@
         public bool[,] ActiveFrets { get; set; } // Координаты ладов, которые в данный момент будут подсвечены
         public Notes.NoteName[,] NameNotes { get; private set; } // Названия нот на грифе	
 
-        public StringedVisualisation(Stringed instrument)
+        public StringedVisualisation(StringedConfig instrument)
         {
             ActiveFrets = new bool[instrument.Strings, instrument.Frets];
             NameNotes = new Notes.NoteName[instrument.Strings, instrument.Frets];
             InitializeNotes(instrument);
         }
 
-        private void InitializeNotes(Stringed instrument)
+        private void InitializeNotes(StringedConfig instrument)
         {
             Notes note = new Notes();
-            note.SetCurrNote(instrument.Tuning.NameNotes[0]);
+            if()
+            //note.SetCurrNote(instrument.Tuning.NameNotes[0]);
 
             for (int @string = 0; @string < NameNotes.GetLength(0); @string++)
             {

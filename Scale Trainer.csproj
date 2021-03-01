@@ -72,8 +72,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Bass.cs" />
+    <Compile Include="DataExchange.cs" />
+    <Compile Include="Guitar.cs" />
+    <Compile Include="ITunable.cs" />
     <Compile Include="Notes.cs" />
-    <Compile Include="Stringed.cs" />
+    <Compile Include="StringedConfig.cs" />
     <Compile Include="StringedVisualisation.cs" />
     <Compile Include="Test.cs" />
     <Compile Include="Tuning.cs" />
