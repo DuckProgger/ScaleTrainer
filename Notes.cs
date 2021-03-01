@@ -8,37 +8,37 @@ namespace Scale_Trainer
 {
     class Notes
     {
-        private int currNote = 0;
-        public enum Note { C = 1, C_sh, D, D_sh, E, F, F_sh, G, G_sh, A, A_sh, B }
+        private NoteName currNote = NoteName.C;
+        public enum NoteName { C = 1, C_sh, D, D_sh, E, F, F_sh, G, G_sh, A, A_sh, B }
 
-        public int GetNext()
+        public NoteName GetNext()
         {
-            if (currNote >= 12)
-            {
-                currNote = 0;
-            }
             currNote++;
+            if (currNote > NoteName.B)
+            {
+                currNote = NoteName.C;
+            }
             return currNote;
         }
 
-        public int GetPrevious()
+        public NoteName GetPrevious()
         {
             currNote--;
-            if (currNote <= 1)
+            if (currNote < NoteName.C)
             {
-                currNote = 12;
+                currNote = NoteName.B;
             }
             return currNote;
         }
 
-        public int GetCurrNote()
+        public NoteName GetCurrNote()
         {
             return currNote;
         }
 
-        public void SetCurrNote(int note)
+        public void SetCurrNote(NoteName note)
         {
             currNote = note;
-        }
+        }       
     }
 }

@@ -10,7 +10,7 @@ namespace Scale_Trainer
     {
         public static void test()
         {
-            Stringed guitar = new Stringed(6, 24, Tuning.Name.Standard);
+            Stringed guitar = new Stringed(6, 24, Tuning.TuningName.Standard);
             StringedVisualisation giutarVis = new StringedVisualisation(guitar);
             ;
         }

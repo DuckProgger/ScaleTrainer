@@ -12,7 +12,7 @@ namespace Scale_Trainer
         public int Frets { get; private set; } // Количество ладов
         public Tuning Tuning { get; private set; } // Строй
 
-        public Stringed(int strings, int frets, Tuning.Name tuning)
+        public Stringed(int strings, int frets, Tuning.TuningName tuning)
         {
             Strings = strings;
             Frets = frets;

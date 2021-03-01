@@ -8,22 +8,22 @@ namespace Scale_Trainer
 {
     class Tuning
     {
-        public int[] Notes { get; private set; }
-        public enum Name { Standard, D, D_drop};
+        public Notes.NoteName[] NameNotes { get; private set; }
+        public enum TuningName { Standard, D, D_drop };
 
-        public Tuning(Name name)
+        public Tuning(TuningName tuning)
         {
-            switch (name)
+            switch (tuning)
             {
-                case Name.Standard:
-                    Notes = new int[]
+                case TuningName.Standard:
+                    NameNotes = new Notes.NoteName[]
                     {
-                        (int)Scale_Trainer.Notes.Note.E,
-                        (int)Scale_Trainer.Notes.Note.A,
-                        (int)Scale_Trainer.Notes.Note.D,
-                        (int)Scale_Trainer.Notes.Note.G,
-                        (int)Scale_Trainer.Notes.Note.B,
-                        (int)Scale_Trainer.Notes.Note.E
+                        Notes.NoteName.E,
+                        Notes.NoteName.A,
+                        Notes.NoteName.D,
+                        Notes.NoteName.G,
+                        Notes.NoteName.B,
+                        Notes.NoteName.E
                     };
                     break;
             }
