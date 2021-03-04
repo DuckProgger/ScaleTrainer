@@ -1,17 +1,16 @@
-﻿using System.IO;
-using System.Xml;
+﻿using System.Xml;
 
 namespace Scale_Trainer
 {
     internal static class DataExchange
     {
-        public static Notes[] GetTuningFromXML(StringedConfig instrument, Tuning.TuningName tuning)
+        public static Note[] GetTuningFromXML(StringedConfig instrument, Tuning.TuningName tuning)
         {
-            Notes[] notes = new Notes[instrument.Strings];
+            Note[] notes = new Note[instrument.Strings];
             string strInstrument = instrument.GetType().Name;
             string strTuning = tuning.ToString();
             string strStrings = instrument.Strings.ToString();
-            
+
             // сформировать запрос xPath
             string xPath = string.Format("tuning[@instrument='{0}' and @strings='{1}' and @name='{2}']", strInstrument, strStrings, strTuning);
 
@@ -19,19 +18,19 @@ namespace Scale_Trainer
             XmlNode xNode = GetNodeByXpath(@"data/tunings.xml", xPath);
 
             //проверка совпадения атрибута количества струн в XML количеству полей этого узла
-            Validate.IsTrue(xNode.ChildNodes.Count == int.Parse(xNode.Attributes.GetNamedItem("strings").Value) * 2, 
+            Validate.IsTrue(xNode.ChildNodes.Count == int.Parse(xNode.Attributes.GetNamedItem("strings").Value) * 2,
                 "Несоответствие количества струн в атрибуте и количества полей.");
 
             int nodePos = 0;
             // обходим все дочерние узлы элемента
             for (int stringNote = 0; stringNote < xNode.ChildNodes.Count / 2; stringNote++, nodePos += 2)
             {
-                Notes.NoteName note = Notes.StringToNote(xNode.ChildNodes[nodePos].InnerText);
+                Note.NoteName note = Note.StringToNoteName(xNode.ChildNodes[nodePos].InnerText);
                 // попытаться преобразовать полученное поле октавы из строки в байт
                 Validate.IsTrue(byte.TryParse(xNode.ChildNodes[nodePos + 1].InnerText, out byte octave), "Файл содержит недопустимый символ.");
-                notes[stringNote] = new Notes(note, octave);
+                notes[stringNote] = new Note(note, octave);
             }
-            return notes;            
+            return notes;
         }
 
         private static XmlNode GetNodeByXpath(string xmlPath, string xPath)

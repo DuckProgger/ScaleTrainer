@@ -2,9 +2,9 @@
 
 namespace Scale_Trainer
 {
-    internal class Notes
+    internal class Note
     {
-        public NoteName Note { get; set; } = NoteName.C;
+        public NoteName CurNote { get; set; }
         public enum NoteName : byte { C = 1, C_sh = 2, D = 3, D_sh = 4, E = 5, F = 6, F_sh = 7, G = 8, G_sh = 9, A = 10, A_sh = 11, B = 12 }
         private byte octave;
         public byte Octave
@@ -12,60 +12,50 @@ namespace Scale_Trainer
             get => octave;
             set
             {
-                if (value >= 1 && value <= 9)
-                {
-                    octave = value;
-                }
-                else
-                {
-                    throw new ArgumentException();
-                }
+                Validate.IsTrue(value >= 1 && value <= 9, "Выход за пределы диапазона октав.");
+                octave = value;
             }
         }
 
-        public Notes()
+        public Note()
         {
-            Note = NoteName.C;
+            CurNote = NoteName.C;
             Octave = 1;
         }
 
-        public Notes(NoteName note, byte octave)
+        public Note(NoteName note, byte octave)
         {
-            Note = note;
+            CurNote = note;
             Octave = octave;
         }
 
-        public NoteName GetNext()
+        public Note(Note note)
         {
-            Note++;
-            if (Note > NoteName.B)
+            CurNote = note.CurNote;
+            Octave = note.Octave;
+        }
+
+        public void NextNote()
+        {
+            CurNote++;
+            if (CurNote > NoteName.B)
             {
-                Note = NoteName.C;
+                CurNote = NoteName.C;
+                Octave++;
             }
-            return Note;
         }
 
-        public NoteName GetPrevious()
+        public void PreviousNote()
         {
-            Note--;
-            if (Note < NoteName.C)
+            CurNote--;
+            if (CurNote < NoteName.C)
             {
-                Note = NoteName.B;
+                CurNote = NoteName.B;
+                Octave--;
             }
-            return Note;
-        }
+        }        
 
-        public NoteName GetCurrNote()
-        {
-            return Note;
-        }
-
-        public void SetCurrNote(NoteName note)
-        {
-            this.Note = note;
-        }
-
-        public static NoteName ByteToNote(byte value)
+        public static NoteName ByteToNoteName(byte value)
         {
             if (value == 1)
             {
@@ -119,36 +109,36 @@ namespace Scale_Trainer
             throw new NotImplementedException();
         }
 
-        public static NoteName StringToNote(string str)
+        public static NoteName StringToNoteName(string str)
         {
             switch (str)
             {
                 case "C":
-                    return Notes.NoteName.C;
+                    return NoteName.C;
                 case "C#":
-                    return Notes.NoteName.C_sh;
+                    return NoteName.C_sh;
                 case "D":
-                    return Notes.NoteName.D;
+                    return NoteName.D;
                 case "D#":
-                    return Notes.NoteName.D_sh;
+                    return NoteName.D_sh;
                 case "E":
-                    return Notes.NoteName.E;
+                    return NoteName.E;
                 case "F":
-                    return Notes.NoteName.F;
+                    return NoteName.F;
                 case "F#":
-                    return Notes.NoteName.F_sh;
+                    return NoteName.F_sh;
                 case "G":
-                    return Notes.NoteName.G;
+                    return NoteName.G;
                 case "G#":
-                    return Notes.NoteName.G_sh;
+                    return NoteName.G_sh;
                 case "A":
-                    return Notes.NoteName.A;
+                    return NoteName.A;
                 case "A#":
-                    return Notes.NoteName.A_sh;
+                    return NoteName.A_sh;
                 case "B":
-                    return Notes.NoteName.B;
+                    return NoteName.B;
             }
-            throw new NotImplementedException();
+            throw new NotImplementedException("Такой ноты не существует.");
         }
     }
 }

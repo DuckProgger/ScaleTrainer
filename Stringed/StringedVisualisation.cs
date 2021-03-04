@@ -3,27 +3,24 @@
     internal sealed class StringedVisualisation
     {
         public bool[,] ActiveFrets { get; set; } // Координаты ладов, которые в данный момент будут подсвечены
-        public Notes.NoteName[,] NameNotes { get; private set; } // Названия нот на грифе	
+        public Note[,] Notes { get; private set; } // Ноты на грифе	с учётом строя
 
         public StringedVisualisation(StringedConfig instrument)
         {
             ActiveFrets = new bool[instrument.Strings, instrument.Frets];
-            NameNotes = new Notes.NoteName[instrument.Strings, instrument.Frets];
+            Notes = new Note[instrument.Strings, instrument.Frets];
             InitializeNotes(instrument);
         }
 
         private void InitializeNotes(StringedConfig instrument)
         {
-            Notes note = new Notes();
-
-            for (int @string = 0; @string < NameNotes.GetLength(0); @string++)
+            for (int @string = 0; @string < Notes.GetLength(0); @string++)
             {
-                note.SetCurrNote(instrument.Tuning.NamesOfNotes[@string].Note);
-                Notes.NoteName fretNote = note.GetCurrNote();
+                Note note = new Note(instrument.Tuning.Notes[@string].CurNote, instrument.Tuning.Notes[@string].Octave);
 
-                for (int fret = 0; fret < NameNotes.GetLength(1); fret++, fretNote = note.GetNext())
+                for (int fret = 0; fret < Notes.GetLength(1); fret++, note.NextNote())
                 {
-                    NameNotes[@string, fret] = fretNote;
+                    Notes[@string, fret] = new Note(note);
                 }
             }
         }
