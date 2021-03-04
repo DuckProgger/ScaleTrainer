@@ -5,9 +5,8 @@ namespace Scale_Trainer
 {
     internal static class DataExchange
     {
-        static string tuningPath = @"data/tunings.xml";
-        static string scalePath = @"data/scales.xml";
-
+        private static readonly string tuningPath = @"data/tunings.xml";
+        private static readonly string scalePath = @"data/scales.xml";
 
         public static Note[] GetTuningFromXML(StringedConfig instrument, Tuning.TuningName tuning)
         {
@@ -56,13 +55,21 @@ namespace Scale_Trainer
             try
             {
                 XmlNode node = GetNodeByXpath(scalePath, string.Format("scale[@name='{0}']", name));
+                int[] intervals = new int[node.ChildNodes.Count];
+
+                for (int i = 0; i < node.ChildNodes.Count; i++)
+                {
+                    intervals[i] = int.Parse(node.ChildNodes[i].InnerText);
+                }
+
+                scale = new Scale(node.Attributes.GetNamedItem("name").Value, intervals);
             }
             catch (Exception)
             {
                 scale = null;
                 return false;
             }
-            scale = new Scale();
+            
             return true;
         }
 

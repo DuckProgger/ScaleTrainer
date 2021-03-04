@@ -43,7 +43,7 @@ namespace Scale_Trainer
                 CurNote = NoteName.C;
                 Octave++;
             }
-        }
+        }        
 
         public void PreviousNote()
         {
@@ -53,7 +53,19 @@ namespace Scale_Trainer
                 CurNote = NoteName.B;
                 Octave--;
             }
-        }        
+        }
+
+        public void OffsetNote(int offset, bool reverse = false)
+        {
+            for (int i = 0; i < offset; i++)
+            {
+                if (!reverse)
+                {
+                    NextNote();
+                }
+                else PreviousNote();
+            }
+        }
 
         public static NoteName ByteToNoteName(byte value)
         {
