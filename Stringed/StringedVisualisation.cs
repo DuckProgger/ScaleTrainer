@@ -14,11 +14,11 @@
 
         private void InitializeNotes(StringedConfig instrument)
         {
-            for (int @string = 0; @string < Notes.GetLength(0); @string++)
+            for (int @string = 0; @string < instrument.Strings; @string++)
             {
                 Note note = new Note(instrument.Tuning.Notes[@string].CurNote, instrument.Tuning.Notes[@string].Octave);
 
-                for (int fret = 0; fret < Notes.GetLength(1); fret++, note.NextNote())
+                for (int fret = 0; fret < instrument.Frets; fret++, note.NextNote())
                 {
                     Notes[@string, fret] = new Note(note);
                 }

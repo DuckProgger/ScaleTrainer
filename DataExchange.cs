@@ -1,9 +1,14 @@
-﻿using System.Xml;
+﻿using System;
+using System.Xml;
 
 namespace Scale_Trainer
 {
     internal static class DataExchange
     {
+        static string tuningPath = @"data/tunings.xml";
+        static string scalePath = @"data/scales.xml";
+
+
         public static Note[] GetTuningFromXML(StringedConfig instrument, Tuning.TuningName tuning)
         {
             Note[] notes = new Note[instrument.Strings];
@@ -15,7 +20,7 @@ namespace Scale_Trainer
             string xPath = string.Format("tuning[@instrument='{0}' and @strings='{1}' and @name='{2}']", strInstrument, strStrings, strTuning);
 
             // найти узел в файле XML
-            XmlNode xNode = GetNodeByXpath(@"data/tunings.xml", xPath);
+            XmlNode xNode = GetNodeByXpath(tuningPath, xPath);
 
             //проверка совпадения атрибута количества струн в XML количеству полей этого узла
             Validate.IsTrue(xNode.ChildNodes.Count == int.Parse(xNode.Attributes.GetNamedItem("strings").Value) * 2,
@@ -31,6 +36,34 @@ namespace Scale_Trainer
                 notes[stringNote] = new Note(note, octave);
             }
             return notes;
+        }
+               
+        public static string[] GetScaleListFromXML()
+        {
+            XmlNodeList list = GetNodesByXpath(scalePath, "scale[@name]");
+            string[] strList = new string[list.Count];
+
+            for (int i = 0; i < list.Count; i++)
+            {
+                strList[i] = list.Item(i).Attributes.GetNamedItem("name").Value;
+            }
+
+            return strList;
+        }
+
+        public static bool TryFindScale(string name, out Scale scale)
+        {
+            try
+            {
+                XmlNode node = GetNodeByXpath(scalePath, string.Format("scale[@name='{0}']", name));
+            }
+            catch (Exception)
+            {
+                scale = null;
+                return false;
+            }
+            scale = new Scale();
+            return true;
         }
 
         private static XmlNode GetNodeByXpath(string xmlPath, string xPath)
@@ -53,6 +86,21 @@ namespace Scale_Trainer
 
             // извлечь найденный узел
             return xNodes[0];
+        }
+
+        private static XmlNodeList GetNodesByXpath(string xmlPath, string xPath)
+        {
+            // получить файл XML
+            XmlDocument xDoc = new XmlDocument();
+            xDoc.Load(xmlPath);
+
+            // получить корневой элемент
+            XmlElement xRoot = xDoc.DocumentElement;
+
+            // найти узел по запросу xPath
+            XmlNodeList xNodes = xRoot.SelectNodes(xPath);
+
+            return xNodes;
         }
     }
 }

@@ -77,6 +77,7 @@
     <Compile Include="Stringed\Guitar.cs" />
     <Compile Include="ITunable.cs" />
     <Compile Include="Note.cs" />
+    <Compile Include="Scale.cs" />
     <Compile Include="Stringed\StringedConfig.cs" />
     <Compile Include="Stringed\StringedVisualisation.cs" />
     <Compile Include="Test.cs" />
