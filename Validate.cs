@@ -2,7 +2,7 @@
 
 namespace Scale_Trainer
 {
-    internal class Validate
+    internal static class Validate
     {
         public static void IsTrue(bool condition, string message = "")
         {

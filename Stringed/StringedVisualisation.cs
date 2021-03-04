@@ -1,6 +1,6 @@
 ﻿namespace Scale_Trainer
 {
-    internal class StringedVisualisation
+    internal sealed class StringedVisualisation
     {
         public bool[,] ActiveFrets { get; set; } // Координаты ладов, которые в данный момент будут подсвечены
         public Notes.NoteName[,] NameNotes { get; private set; } // Названия нот на грифе	
@@ -18,7 +18,7 @@
 
             for (int @string = 0; @string < NameNotes.GetLength(0); @string++)
             {
-                note.SetCurrNote(instrument.Tuning.NamesOfNotes[@string]);
+                note.SetCurrNote(instrument.Tuning.NamesOfNotes[@string].Note);
                 Notes.NoteName fretNote = note.GetCurrNote();
 
                 for (int fret = 0; fret < NameNotes.GetLength(1); fret++, fretNote = note.GetNext())

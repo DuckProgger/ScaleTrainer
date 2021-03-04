@@ -1,88 +1,51 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
+using System.Xml;
 
 namespace Scale_Trainer
 {
-    internal class DataExchange
+    internal static class DataExchange
     {
-        private enum TypeOfInstrument : byte { Guitar, Bass }
-
-        public static Notes.NoteName[] GetTuningFromDB(StringedConfig instrument, Tuning.TuningName tuning)
+        public static Notes[] GetTuningFromXML(StringedConfig instrument, Tuning.TuningName tuning)
         {
-            
-            byte[] tuningInfoByte;
+            Notes[] notes = new Notes[instrument.Strings];
+            string strInstrument = instrument.GetType().Name;
+            string strTuning = tuning.ToString();
+            string strStrings = instrument.Strings.ToString();
 
-            if (instrument is Guitar)
+            XmlDocument xDoc = new XmlDocument();
+            xDoc.Load(@"data/tunings.xml");
+            // получим корневой элемент
+            XmlElement xRoot = xDoc.DocumentElement;
+
+            // обход всех узлов в корневом элементе
+            foreach (XmlNode xnode in xRoot)
             {
-                tuningInfoByte = GetTuningInfoFromDB((byte)TypeOfInstrument.Guitar, Tuning.EnumToByte(tuning));
-            }
-            else if (instrument is Bass)
-            {
-                tuningInfoByte = GetTuningInfoFromDB((byte)TypeOfInstrument.Bass, Tuning.EnumToByte(tuning));
-            }
-            else
-            {
-                throw new NotImplementedException();
-            }
-
-            Notes.NoteName[] tuningInfo = new Notes.NoteName[tuningInfoByte.Length];
-
-            for (int i = 0; i < tuningInfo.Length; i++)
-            {
-                tuningInfo[i] = Notes.ByteToNote(tuningInfoByte[i]);
-            }
-
-            return tuningInfo; 
-        }
-
-        private static byte[] GetTuningInfoFromDB(byte instrument, byte tuning)
-        {
-            byte[] buffer = GetByteBufferFromDB(@"data/tuning.db");
-            byte[] tuningInfoCom = new byte[14];
-            byte[] tuningInfo = null;
-
-            for (int i = 0; i < buffer.Length; i += 16)
-            {
-                if (buffer[i] == instrument && buffer[i + 1] == tuning)
+                // получаем атрибуты
+                if (xnode.Attributes.Count > 0)
                 {
-                    int bitNumber = 0;
-                    for (int j = i + 2; j < 16; j++, bitNumber++)
+                    XmlNode[] attr = new XmlNode[3];
+                    attr[0] = xnode.Attributes.GetNamedItem("instrument");
+                    attr[1] = xnode.Attributes.GetNamedItem("strings");
+                    attr[2] = xnode.Attributes.GetNamedItem("name");
+
+                    if (attr[2].Value == strTuning && attr[1].Value == strStrings && attr[0].Value == strInstrument)
                     {
-                        if(buffer[j] == 0)
+                        // проверка совпадения атрибута количества струн в XML количеству полей этого узла 
+                        Validate.IsTrue(xnode.ChildNodes.Count == int.Parse(attr[1].Value) * 2, "Несоответствие количества струн в атрибуте и количества полей.");
+                        int nodePos = 0;
+                        // обходим все дочерние узлы элемента
+                        for (int stringNote = 0; stringNote < xnode.ChildNodes.Count / 2; stringNote++, nodePos += 2)
                         {
-                            tuningInfo = new byte[bitNumber];
-                            Array.Copy(tuningInfoCom, tuningInfo, bitNumber);
-                            break;
+                            Notes.NoteName note = Notes.StringToNote(xnode.ChildNodes[nodePos].InnerText);
+                            // попытаться преобразовать полученное поле октавы из строки в байт
+                            Validate.IsTrue(byte.TryParse(xnode.ChildNodes[nodePos + 1].InnerText, out byte octave), "Файл содержит недопустимый символ.");
+                            notes[stringNote] = new Notes(note, octave);
                         }
-                        tuningInfoCom[bitNumber] = buffer[j];
+                        return notes;
                     }
-                    return tuningInfo;
-                }
-                else
-                {
-                    continue;
                 }
             }
-
             throw new FileNotFoundException();
-
         }
-
-        public static byte[] GetByteBufferFromDB(string path, int offset, int count)
-        {
-            byte[] buffer = new byte[count];
-            using (FileStream fs = new FileStream(path, FileMode.Open))
-            {
-                fs.Read(buffer, offset, count);
-            }
-            return buffer;
-        }
-
-        public static byte[] GetByteBufferFromDB(string path)
-        {
-            return File.ReadAllBytes(path);
-        }
-
-
     }
 }
