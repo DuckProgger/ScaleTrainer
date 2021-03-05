@@ -5,11 +5,12 @@
         public static void test()
         {
             Guitar guitar = new Guitar(6, 24, Tuning.TuningName.D);
-            StringedVisualizationConfig config = new StringedVisualizationConfig(5);
-            StringedVisualisation giutarVis = new StringedVisualisation(guitar, config);
-            //string[] str = DataExchange.GetScaleListFromXML();
-            Scale sc = new Scale("Major", Note.NoteName.C);
-            giutarVis.SetFirstCoord(sc.Key);
+            StringedVisualizationConfig config = new StringedVisualizationConfig();
+            Scale scale = new Scale("Major", Note.NoteName.C);
+
+            StringedVisualisation giutarVis = new StringedVisualisation(guitar, config, scale);
+
+            giutarVis.SetScaleSector();
             ;
 
         }

@@ -17,6 +17,30 @@ namespace Scale_Trainer
             }
         }
 
+        public static bool operator ==(Note note1, Note note2)
+        {
+            if (note1.CurNote == note2.CurNote && note1.Octave == note2.Octave)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public static bool operator !=(Note note1, Note note2)
+        {
+            if (note1.CurNote != note2.CurNote || note1.Octave != note2.Octave)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         public Note()
         {
             CurNote = NoteName.C;

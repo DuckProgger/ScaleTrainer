@@ -7,6 +7,7 @@ namespace Scale_Trainer
         public string Name { get; private set; }
         public int[] Intervals { get; private set; }
         public Note.NoteName Key { get; private set; }
+        private int curPos = -1;
 
         public Scale(string name, int[] intervals, Note.NoteName key = Note.NoteName.C)
         {
@@ -29,9 +30,14 @@ namespace Scale_Trainer
             Key = key;
         }
 
-        public void NextInterval()
+        public int NextInterval()
         {
-
+            curPos++;
+            if (curPos > Intervals.Length)
+            {
+                curPos = 0;
+            }
+            return Intervals[curPos];
         }
     }
 }
