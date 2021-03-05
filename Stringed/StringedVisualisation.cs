@@ -1,12 +1,19 @@
-﻿namespace Scale_Trainer
+﻿using System;
+
+namespace Scale_Trainer
 {
     internal sealed class StringedVisualisation
     {
         public bool[,] ActiveFrets { get; set; } // Координаты ладов, которые в данный момент будут подсвечены
         public Note[,] Notes { get; private set; } // Ноты на грифе	с учётом строя
+        private readonly StringedConfig instrument;
+        private readonly StringedVisualizationConfig config;       
 
-        public StringedVisualisation(StringedConfig instrument)
+        public StringedVisualisation(StringedConfig instrument, StringedVisualizationConfig config)
         {
+            Validate.IsTrue(instrument.Strings >= config.FirstString, "Настройка первой струны больше количества струн инструмента.");
+            this.instrument = instrument;
+            this.config = config;
             ActiveFrets = new bool[instrument.Strings, instrument.Frets];
             Notes = new Note[instrument.Strings, instrument.Frets];
             InitializeNotes(instrument);
@@ -23,6 +30,19 @@
                     Notes[@string, fret] = new Note(note);
                 }
             }
+        }
+
+        public void SetFirstCoord(Note.NoteName key)
+        {
+            for (int fret = 0; fret < instrument.Frets; fret++)
+            {
+                if (Notes[config.FirstString - 1, fret].CurNote == key)
+                {
+                    ActiveFrets[config.FirstString - 1, fret] = true;
+                    return;
+                }
+            }
+            throw new Exception("Нота не найдена.");
         }
     }
 }
