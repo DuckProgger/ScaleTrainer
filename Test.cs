@@ -10,7 +10,14 @@
 
             StringedVisualisation giutarVis = new StringedVisualisation(guitar, config, scale);
 
-            giutarVis.SetScaleSector();
+            giutarVis.SetFretsNextString();
+            giutarVis.SetFretsNextString();
+            giutarVis.SetFretsNextString();
+
+            giutarVis.SetFretsNextString();
+            giutarVis.SetFretsNextString();
+
+
             ;
 
         }

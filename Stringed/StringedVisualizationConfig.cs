@@ -11,6 +11,10 @@
         /// </summary>
         public int NotesOnNeck { get; private set; }
         /// <summary>
+        /// Количество одновременно отображаемых нот на струне.
+        /// </summary>
+        public int NotesOnString { get; private set; }
+        /// <summary>
         /// Максимальное количество ладов между крайними нотами на одной струне.
         /// </summary>
         public int MaxInterval { get; private set; }
@@ -20,6 +24,7 @@
         {
             FirstString = 6;
             NotesOnNeck = 6;
+            NotesOnString = 3;
             MaxInterval = 4;
         }
 
@@ -36,6 +41,11 @@
         public void SetNotesOnNeck(int newValue)
         {
             NotesOnNeck = newValue;
+        }
+
+        public void SetNotesOnString(int newValue)
+        {
+            NotesOnString = newValue;
         }
 
         public void SetMaxInterval(int newValue)

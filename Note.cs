@@ -67,7 +67,7 @@ namespace Scale_Trainer
                 CurNote = NoteName.C;
                 Octave++;
             }
-        }        
+        }
 
         public void PreviousNote()
         {
@@ -87,7 +87,10 @@ namespace Scale_Trainer
                 {
                     NextNote();
                 }
-                else PreviousNote();
+                else
+                {
+                    PreviousNote();
+                }
             }
         }
 

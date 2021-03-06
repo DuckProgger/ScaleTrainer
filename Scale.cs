@@ -33,7 +33,7 @@ namespace Scale_Trainer
         public int NextInterval()
         {
             curPos++;
-            if (curPos > Intervals.Length)
+            if (curPos > Intervals.Length - 1)
             {
                 curPos = 0;
             }
