@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Collections;
 
 namespace Scale_Trainer
 {
@@ -28,9 +29,9 @@ namespace Scale_Trainer
                 throw new FileNotFoundException("Гамма не найдена.");
             }
             Key = key;
-        }
+        }  
 
-        public int NextInterval()
+        public int MoveNext()
         {
             curPos++;
             if (curPos > Intervals.Length - 1)
