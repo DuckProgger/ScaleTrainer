@@ -40,5 +40,15 @@ namespace Scale_Trainer
             }
             return Intervals[curPos];
         }
+
+        public int MovePrevious()
+        {
+            curPos--;
+            if (curPos < 0)
+            {
+                curPos = Intervals.Length - 1;
+            }
+            return Intervals[curPos];
+        }
     }
 }

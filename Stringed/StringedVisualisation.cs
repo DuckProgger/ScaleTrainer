@@ -21,8 +21,8 @@ namespace Scale_Trainer
             this.instrument = instrument;
             this.config = config;
             this.scale = scale;
-            ActiveFrets = new bool[instrument.Strings, instrument.Frets];
-            Notes = new Note[instrument.Strings, instrument.Frets];
+            ActiveFrets = new bool[instrument.Strings, instrument.Frets + 1];
+            Notes = new Note[instrument.Strings, instrument.Frets + 1];
             InitializeNotes();
             FindAndSetFirstFret();
             SetFirstFrets();
@@ -58,12 +58,11 @@ namespace Scale_Trainer
 
         private void SetFirstFrets()
         {
-
             int startPosFret = curFret;
 
             for (int i = 0; i < config.NotesOnNeck - 1; i++)
             {
-                int interval = scale.MoveNext();
+                int interval = GetNextInterval(); ;
 
                 if (NextStringCondition(startPosFret))
                 {
@@ -81,52 +80,38 @@ namespace Scale_Trainer
         {
             int @string = reverse ? curString - 1 : curString + 1;
             RemoveFretsOnString(@string);
+            //int interval = GetNextInterval();
 
             if (CheckEndString())
             {
-                reverse = !reverse;
-                @string = reverse ? curString + 1 : curString - 1;
-                RemoveFretsOnString(@string);
                 RemoveFretsOnString(curString);
+
+                if (!reverse)
+                {
+                    SetNextFret(GetNextInterval());
+                    GetNextInterval(); 
+                    reverse = !reverse;
+                }
+                else
+                {
+                    reverse = !reverse;
+                    SetNextFret(GetNextInterval());
+                    GetNextInterval();
+                }                
                 SetFirstFrets();
             }
             else
-            {                
-                int interval = scale.MoveNext();
+            {
+                int interval = GetNextInterval();
                 SetNextFretOnNextString(interval);
 
                 int startPosFret = curFret;
                 while (!NextStringCondition(startPosFret))
                 {
-                    interval = scale.MoveNext();
+                    interval = GetNextInterval();
                     SetNextFret(interval);
                 }
-            }
-
-            //int interval = scale.MoveNext();
-            //if (JumpToNextString(interval))
-            //{
-            //    // Достигли крайней струны
-            //    @string = reverse ? curString + 1 : curString - 1;
-            //    RemoveFretsOnString(@string);
-            //    RemoveFretsOnString(curString);
-            //    JumpToNextFret(interval);
-            //    SetFirstFrets();
-            //}
-            //else
-            //{
-            //    // Переход на следущую струну
-            //    int startPosFret = curFret;
-            //    while (true)
-            //    {
-            //        JumpToNextFret(interval);
-            //        if (NextStringCondition(startPosFret))
-            //        {
-            //            break;
-            //        }
-            //        interval = scale.MoveNext();
-            //    }
-            //}
+            }           
         }
 
         private void RemoveFretsOnString(int @string)
@@ -138,7 +123,7 @@ namespace Scale_Trainer
         }
 
         private int FindFretByNote(Note note, int @string)
-        {           
+        {
             if (!reverse)
             {
                 for (int fret = curFret - config.MaxInterval - 1; fret <= curFret; fret++)
@@ -151,7 +136,7 @@ namespace Scale_Trainer
             }
             else
             {
-                for (int fret = curFret + config.MaxInterval + 1; fret >= curFret; fret--)
+                for (int fret = curFret + config.MaxInterval + 1; fret >= curFret && fret < instrument.Frets; fret--)
                 {
                     if (Notes[@string, fret] == note)
                     {
@@ -162,37 +147,6 @@ namespace Scale_Trainer
 
             throw new Exception("В заданном диапазоне нота не найдена. Измените настройки диапазона.");
         }
-
-        //private int FindNeededFretOnNextString(int interval)
-        //{
-        //    Note neededNote = new Note(Notes[curString, curFret]);
-        //    neededNote.OffsetNote(interval, reverse);
-        //    int tempString;
-
-        //    tempString = reverse ? curString + 1 : curString - 1;
-        //    if (!reverse)
-        //    {
-        //        for (int fret = curFret - config.MaxInterval - 1; fret <= curFret; fret++)
-        //        {
-        //            if (Notes[tempString, fret] == neededNote)
-        //            {
-        //                return fret;
-        //            }
-        //        }
-        //    }
-        //    else
-        //    {
-        //        for (int fret = curFret + config.MaxInterval + 1; fret >= curFret; fret--)
-        //        {
-        //            if (Notes[tempString, fret] == neededNote)
-        //            {
-        //                return fret;
-        //            }
-        //        }
-        //    }
-
-        //    throw new Exception("В заданном диапазоне нота не найдена. Измените настройки диапазона.");
-        //}
 
         private void SetNextFretOnNextString(int interval)
         {
@@ -219,29 +173,9 @@ namespace Scale_Trainer
             curString = reverse ? ++curString : --curString;
         }
 
-        //private bool JumpToNextString(int interval)
-        //{
-        //    curString = reverse ? ++curString : --curString;
-        //    if (CheckEndString())
-        //    {
-        //        reverse = !reverse;
-        //        return true;
-        //    }
-        //    curFret = FindNeededFretOnNextString(interval);
-        //    SetActiveFret(curString, curFret);
-        //    return false;
-        //}
-
         private bool CheckEdgeOfNeck() => curFret > instrument.Frets || curFret < 0;
 
         private bool CheckEndString() => curString >= instrument.Strings - 1 || curString <= 0;
-
-
-        //private bool CheckEndString()
-        //{
-        //    int nextString = reverse ? ++curString : --curString;
-        //    return nextString >= instrument.Strings - 1 || nextString <= 0;
-        //}
 
         private bool NextStringCondition(int startPosFret) => CheckMaxInterval(startPosFret) || CheckNotesOnString();
 
@@ -251,24 +185,11 @@ namespace Scale_Trainer
         {
             int activeFretsCount = 0;
 
-            if (!reverse)
+            for (int fret = 0; fret < instrument.Frets; fret++)
             {
-                for (int fret = curFret - config.MaxInterval - 1; fret <= curFret; fret++)
+                if (ActiveFrets[curString, fret])
                 {
-                    if (ActiveFrets[curString, fret])
-                    {
-                        activeFretsCount++;
-                    }
-                }
-            }
-            else
-            {
-                for (int fret = curFret + config.MaxInterval + 1; fret >= curFret; fret--)
-                {
-                    if (ActiveFrets[curString, fret])
-                    {
-                        activeFretsCount++;
-                    }
+                    activeFretsCount++;
                 }
             }
 
@@ -281,6 +202,8 @@ namespace Scale_Trainer
                 return false;
             }
         }
+
+        private int GetNextInterval() => reverse ? scale.MovePrevious() : scale.MoveNext();
 
         private void SetFret(int @string, int fret)
         {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 namespace Scale_Trainer
 {
     internal class Test
@@ -15,7 +16,15 @@ namespace Scale_Trainer
             {
                 Console.Clear();
                 ShowNeck(giutarVis.ActiveFrets);
-                giutarVis.SetFretsNextString();
+                try
+                {
+                    giutarVis.SetFretsNextString();
+                }
+                catch (Exception)
+                {
+                    // Упражнение окончено.
+                    break;
+                }
             }
 
 
