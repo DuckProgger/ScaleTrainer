@@ -12,20 +12,20 @@ namespace Scale_Trainer
 
             StringedVisualisation giutarVis = new StringedVisualisation(guitar, config, scale);
 
-            while (!giutarVis.EndOfExercise)
-            {
-                Console.Clear();
-                ShowNeck(giutarVis.ActiveFrets);
-                try
-                {
-                    giutarVis.SetFretsNextString();
-                }
-                catch (Exception)
-                {
-                    // Упражнение окончено.
-                    break;
-                }
-            }
+            //while (!giutarVis.EndOfExercise)
+            //{
+            //    Console.Clear();
+            //    ShowNeck(giutarVis.ActiveFrets);
+            //    try
+            //    {
+            //        giutarVis.SetFretsNextString();
+            //    }
+            //    catch (Exception)
+            //    {
+            //        // Упражнение окончено.
+            //        break;
+            //    }
+            //}
 
 
 

@@ -39,7 +39,7 @@ namespace Scale_Trainer
             {
                 return false;
             }
-        }
+        }                
 
         public Note()
         {
@@ -47,7 +47,7 @@ namespace Scale_Trainer
             Octave = 1;
         }
 
-        public Note(NoteName note, byte octave)
+        public Note(NoteName note, byte octave = 1)
         {
             CurNote = note;
             Octave = octave;
