@@ -80,7 +80,6 @@
     <Compile Include="Scale.cs" />
     <Compile Include="Stringed\StringedConfig.cs" />
     <Compile Include="Stringed\StringedVisualisation.cs" />
-    <Compile Include="Stringed\StringedVisualizationConfig.cs" />
     <Compile Include="Test.cs" />
     <Compile Include="Tuning.cs" />
     <Compile Include="Validate.cs" />

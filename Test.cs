@@ -7,31 +7,10 @@ namespace Scale_Trainer
         public static void test()
         {
             Guitar guitar = new Guitar(6, 24, Tuning.TuningName.D);
-            StringedVisualizationConfig config = new StringedVisualizationConfig();
-            Scale scale = new Scale("Major", Note.NoteName.C);
-
-            StringedVisualisation giutarVis = new StringedVisualisation(guitar, config, scale);
+            Scale scale = new Scale("Chromatic", Note.NoteName.D_sh);
+            StringedVisualisation giutarVis = new StringedVisualisation(guitar, scale);
 
             ShowNeck(giutarVis.AvailableFrets);
-
-            //while (!giutarVis.EndOfExercise)
-            //{
-            //    Console.Clear();
-            //    ShowNeck(giutarVis.ActiveFrets);
-            //    try
-            //    {
-            //        giutarVis.SetFretsNextString();
-            //    }
-            //    catch (Exception)
-            //    {
-            //        // Упражнение окончено.
-            //        break;
-            //    }
-            //}
-
-
-
-
             ;
 
         }
@@ -46,7 +25,22 @@ namespace Scale_Trainer
             {
                 for (int fret = 0; fret < frets; fret++)
                 {                    
-                    symbol = ActiveFrets[@string, fret] ? "  " + fret.ToString() : "  |";
+                    if(ActiveFrets[@string, fret])
+                    {
+                        if (fret < 10)
+                        {
+                            symbol = "   ";
+                        }
+                        else
+                        {
+                            symbol = "  ";
+                        }
+                        symbol +=fret.ToString();
+                    }
+                    else
+                    {
+                        symbol = "   |";
+                    }
                     Console.Write(symbol);
                 }
             }
