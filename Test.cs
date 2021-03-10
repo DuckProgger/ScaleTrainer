@@ -12,6 +12,8 @@ namespace Scale_Trainer
 
             StringedVisualisation giutarVis = new StringedVisualisation(guitar, config, scale);
 
+            ShowNeck(giutarVis.AvailableFrets);
+
             //while (!giutarVis.EndOfExercise)
             //{
             //    Console.Clear();
@@ -43,8 +45,8 @@ namespace Scale_Trainer
             for (int @string = 0; @string < strings; @string++, Console.WriteLine())
             {
                 for (int fret = 0; fret < frets; fret++)
-                {
-                    symbol = ActiveFrets[@string, fret] ? " " + fret.ToString() : " - ";
+                {                    
+                    symbol = ActiveFrets[@string, fret] ? "  " + fret.ToString() : "  |";
                     Console.Write(symbol);
                 }
             }

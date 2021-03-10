@@ -4,31 +4,29 @@ namespace Scale_Trainer
 {
     internal sealed class StringedVisualisation
     {
-        public bool[,] ActiveFrets { get; set; } // Координаты ладов, которые в данный момент будут подсвечены
+        //public bool[,] ActiveFrets { get; set; } // Координаты ладов, которые в данный момент будут подсвечены
         public Note[,] Notes { get; private set; } // Ноты на грифе	с учётом строя
-        public bool EndOfExercise { get; private set; } = false;
+        //public bool EndOfExercise { get; private set; } = false;
 
         private readonly StringedConfig instrument;
-        private readonly StringedVisualizationConfig config;
+        //private readonly StringedVisualizationConfig config;
         private readonly Scale scale;
-        private int curString = 0;
-        private int curFret = 0;
-        private bool reverse = false;
-        private bool[,] availableFrets; // Доступные лады в соответствии с гаммой и строем гитары
+        //private int curString = 0;
+        //private int curFret = 0;
+        //private bool reverse = false;
+        public bool[,] AvailableFrets { get; private set; } // Доступные лады в соответствии с гаммой и строем гитары
 
         public StringedVisualisation(StringedConfig instrument, StringedVisualizationConfig config, Scale scale)
         {
             Validate.IsTrue(instrument.Strings >= config.FirstString, "Настройка первой струны больше количества струн инструмента.");
             this.instrument = instrument;
-            this.config = config;
+            //this.config = config;
             this.scale = scale;
-            ActiveFrets = new bool[instrument.Strings, instrument.Frets + 1];
+            //ActiveFrets = new bool[instrument.Strings, instrument.Frets + 1];
             Notes = new Note[instrument.Strings, instrument.Frets + 1];
-            availableFrets = new bool[instrument.Strings, instrument.Frets + 1];
+            AvailableFrets = new bool[instrument.Strings, instrument.Frets + 1];
             InitializeNotes();
             InitializeAvailableFrets();
-            //FindAndSetFirstFret();
-            //SetFirstFrets();
         }
 
         private void InitializeNotes()
@@ -67,7 +65,7 @@ namespace Scale_Trainer
                             break;
                         }
                     }
-                    if (availableFrets[@string, fret])
+                    if (AvailableFrets[@string, fret])
                     {
                         return;
                     }
@@ -83,14 +81,58 @@ namespace Scale_Trainer
                 {
                     if (Notes[@string, fret].CurNote == seachedNote)
                     {
-                        availableFrets[@string, fret] = true;
-                        scale.MoveNext(); 
+                        AvailableFrets[@string, fret] = true;
+                        scale.MoveNext();
                         seachedNote = scale.GetCurrentNote().CurNote;
                     }
                 }
 
             }
         }
+
+
+
+        //public void StartExercice()
+        //{
+        //    Validate.IsTrue(config.FirstString != -1 && config.FirstFret != -1, "Не выбрана первая нота.");
+        //    curFret = config.FirstFret;
+        //    curString = config.FirstString;
+        //}
+
+        //private void SetNextFrets(int startString, int startFret, bool direction)
+        //{
+        //    int fretsOnString = 0;
+        //    int fret = startFret;
+        //    for (int fretInterval = 0; fretInterval < config.MaxInterval && fretsOnString < config.NotesOnString; fretInterval++)
+        //    {
+        //        if (availableFrets[startString, fret])
+        //        {
+        //            SetFret(startString, fret);
+        //            fretsOnString++;
+        //        }
+        //        fret = direction ? ++fret : --fret;
+        //    }
+        //}
+
+        //private void RemoveFretsOnString(int @string)
+        //{
+        //    for (int i = 0; i < instrument.Frets; i++)
+        //    {
+        //        ResetFret(@string, i);
+        //    }
+        //}
+
+        //private void SetFret(int @string, int fret)
+        //{
+        //    ActiveFrets[@string, fret] = true;
+        //}
+
+        //private void ResetFret(int @string, int fret)
+        //{
+        //    ActiveFrets[@string, fret] = false;
+        //}
+
+
 
 
 
