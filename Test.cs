@@ -6,8 +6,8 @@ namespace Scale_Trainer
     {
         public static void test()
         {
-            Guitar guitar = new Guitar(6, 24, Tuning.TuningName.D);
-            Scale scale = new Scale("Chromatic", Note.NoteName.D_sh);
+            Guitar guitar = new Guitar(6, 24, "D");
+            Scale scale = new Scale("Mohanangi", Note.NoteName.D_sh);
             StringedVisualisation giutarVis = new StringedVisualisation(guitar, scale);
 
             ShowNeck(giutarVis.AvailableFrets);

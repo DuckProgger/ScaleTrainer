@@ -2,12 +2,14 @@
 {
     internal sealed class Tuning
     {
-        public Note[] Notes { get; private set; }
-        public enum TuningName : byte { Standard, D, D_drop }
+        /// <summary>
+        /// Ноты открытых струн инструмента.
+        /// </summary>
+        public Note[] Notes { get; private set; } 
 
-        public Tuning(StringedConfig instrument, TuningName tuning)
+        public Tuning(StringedConfig instrument, string tuningName)
         {
-            Notes = DataExchange.GetTuningFromXML(instrument, tuning);
+            Notes = DataExchange.GetTuningFromXML(instrument, tuningName);
         }
     }
 }

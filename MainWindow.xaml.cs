@@ -23,6 +23,6 @@ namespace Scale_Trainer
         public MainWindow()
         {
             InitializeComponent();
-        }
+        }        
     }
 }

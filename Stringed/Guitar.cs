@@ -2,9 +2,9 @@
 {
     internal sealed class Guitar : StringedConfig
     {
-        public Guitar(int strings, int frets, Tuning.TuningName tuning) : base(strings, frets)
+        public Guitar(int strings, int frets, string tuningName) : base(strings, frets)
         {
-            Tuning = new Tuning(this, tuning);
+            Tuning = new Tuning(this, tuningName);
         }
     }
 }
