@@ -16,7 +16,7 @@ namespace Scale_Trainer
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            Test.test();
+            //Test.test();
         }
     }
 }
