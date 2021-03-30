@@ -11,6 +11,7 @@ namespace Scale_Trainer
             StringedVisualisation giutarVis = new StringedVisualisation(guitar, scale);
 
             ShowNeck(giutarVis.AvailableFrets);
+            CalcKoeff(1.0);
             ;
 
         }
@@ -24,8 +25,8 @@ namespace Scale_Trainer
             for (int @string = 0; @string < strings; @string++, Console.WriteLine())
             {
                 for (int fret = 0; fret < frets; fret++)
-                {                    
-                    if(ActiveFrets[@string, fret])
+                {
+                    if (ActiveFrets[@string, fret])
                     {
                         if (fret < 10)
                         {
@@ -35,7 +36,7 @@ namespace Scale_Trainer
                         {
                             symbol = "  ";
                         }
-                        symbol +=fret.ToString();
+                        symbol += fret.ToString();
                     }
                     else
                     {
@@ -45,5 +46,21 @@ namespace Scale_Trainer
                 }
             }
         }
+
+        static double fret = 0;
+
+        static void CalcKoeff(double value)
+        {
+            if (fret < 24)
+            {
+                double temp = value / Math.Pow(2, 0.083333);
+                double k = (value - temp) * 133.333;
+                fret++;
+                Console.WriteLine("{0:#.###}", k);
+                CalcKoeff(temp);
+            }
+            return;
+        }
+
     }
 }
