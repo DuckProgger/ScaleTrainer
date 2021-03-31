@@ -20,10 +20,12 @@ namespace Scale_Trainer
         int fret = 0;
         double[] k;
         event EventHandler ParameterChanged;
+        private readonly int maxFrets = 24;
 
         public MainWindow()
         {
             InitializeComponent();
+            CreateNeckColumns(maxFrets);
             ParameterChanged += TryCreateVisualization;
             Key.Items.Add(Note.NoteName.D);
             Key.Items.Add(Note.NoteName.C);
@@ -68,7 +70,7 @@ namespace Scale_Trainer
         {
             selectedKey = (Note.NoteName)((ComboBox)sender).SelectedItem;
             ParameterChanged?.Invoke(this, EventArgs.Empty);
-        }        
+        }
 
         private void TryCreateVisualization(object sender, EventArgs e)
         {
@@ -76,9 +78,79 @@ namespace Scale_Trainer
             {
                 CreateVisualization();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Information.Text = ex.Message;
+            }
+        }
+
+        private void CreateNeckColumns(int number)
+        {
+            k = new double[selectedFrets.Value];
+            CalcKoeff(1.0);
+            for (int i = 0; i < number; i++)
+            {
+                Neck.ColumnDefinitions.Add(new ColumnDefinition()
+                {
+                    Width = new GridLength(k[i], GridUnitType.Star)
+                });
+            }
+        }
+
+        private void CreateNeckRows(int number)
+        {
+            for (int i = 0; i < number; i++)
+            {
+                Neck.RowDefinitions.Add(new RowDefinition());
+            }
+        }
+
+        private void CreateFretsOnNeck(int strings, int frets)
+        {
+            for (int i = 0; i < strings; i++)
+            {
+                for (int j = 1; j <= frets; j++)
+                {
+                    Ellipse ellipse = new Ellipse()
+                    {
+                        Width = 10,
+                        Height = 10,
+                        Fill = new SolidColorBrush(Colors.Red),
+                    };
+                    if (guitarVis.AvailableFrets[i, j])
+                    {
+                        Neck.Children.Add(ellipse);
+                        Grid.SetColumn(ellipse, j - 1);
+                        Grid.SetRow(ellipse, i);
+                    }
+                }
+            }
+        }
+
+        private void CreateFretsOnNut(int strings)
+        {
+            for (int i = 0; i < strings; i++)
+            {
+                Ellipse ellipse = new Ellipse()
+                {
+                    Width = 10,
+                    Height = 10,
+                    Fill = new SolidColorBrush(Colors.Red),
+                };
+                if (guitarVis.AvailableFrets[i, 0])
+                {
+                    Nut.Children.Add(ellipse);
+                    Grid.SetRow(ellipse, i);
+                }
+
+            }
+        }
+
+        private void CreateNutRows(int number)
+        {
+            for (int i = 0; i < number; i++)
+            {
+                Nut.RowDefinitions.Add(new RowDefinition());
             }
         }
 
@@ -86,45 +158,14 @@ namespace Scale_Trainer
         {
             if (selectedStrings.HasValue && selectedFrets.HasValue && selectedTuning != null && selectedScale != null && selectedKey != 0)
             {
-                ClearNeck();
                 guitar = new Guitar(selectedStrings.Value, selectedFrets.Value, selectedTuning);
                 scale = new Scale(selectedScale, selectedKey);
                 guitarVis = new StringedVisualisation(guitar, scale);
-
-                k = new double[selectedFrets.Value];
-                CalcKoeff(1.0);
-
-                for (int i = 0; i < selectedFrets; i++)
-                {
-                    Neck.ColumnDefinitions.Add(new ColumnDefinition()
-                    {
-                        Width = new GridLength(k[i], GridUnitType.Star)
-                    });
-                }
-                for (int i = 0; i < selectedStrings; i++)
-                {
-                    Neck.RowDefinitions.Add(new RowDefinition());
-                }
-
-                for (int i = 0; i < selectedStrings; i++)
-                {
-                    for (int j = 0; j < selectedFrets; j++)
-                    {
-                        Ellipse ellipse = new Ellipse()
-                        {
-                            Width = 10,
-                            Height = 10,
-                            Fill = new SolidColorBrush(Colors.Red),
-                            Name = string.Format("fret{0}{1}", i, j)
-                        };
-                        if (guitarVis.AvailableFrets[i, j])
-                        {
-                            Neck.Children.Add(ellipse);
-                            Grid.SetColumn(ellipse, j);
-                            Grid.SetRow(ellipse, i);
-                        }
-                    }
-                }
+                ClearNeck();
+                CreateNeckRows(selectedStrings.Value);
+                CreateNutRows(selectedStrings.Value);
+                CreateFretsOnNeck(selectedStrings.Value, selectedFrets.Value);
+                CreateFretsOnNut(selectedStrings.Value);
                 Information.Text = "";
             }
         }
@@ -134,7 +175,7 @@ namespace Scale_Trainer
             if (fret < selectedFrets.Value)
             {
                 double temp = value / Math.Pow(2, 0.083333);
-                k[fret] = (value - temp) * 133.333;
+                k[fret] = value - temp;
                 fret++;
                 CalcKoeff(temp);
             }
@@ -145,10 +186,10 @@ namespace Scale_Trainer
         {
             if (Neck != null)
             {
-                fret = 0;
-                Neck.ColumnDefinitions.Clear();
                 Neck.RowDefinitions.Clear();
                 Neck.Children.Clear();
+                Nut.RowDefinitions.Clear();
+                Nut.Children.Clear();
             }
         }
     }

@@ -6,10 +6,10 @@ namespace Scale_Trainer
     {
         public bool[,] AvailableFrets { get; private set; } // Доступные лады в соответствии с гаммой и строем гитары
         private Note[,] notes; // Ноты на грифе	с учётом строя
-        private readonly StringedConfig instrument;
+        private readonly StringedInstrument instrument;
         private readonly Scale scale;
 
-        public StringedVisualisation(StringedConfig instrument, Scale scale)
+        public StringedVisualisation(StringedInstrument instrument, Scale scale)
         {
             this.instrument = instrument;
             this.scale = scale;

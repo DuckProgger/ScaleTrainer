@@ -75,10 +75,10 @@
     <Compile Include="Stringed\Bass.cs" />
     <Compile Include="DataExchange.cs" />
     <Compile Include="Stringed\Guitar.cs" />
-    <Compile Include="ITunable.cs" />
+    <Compile Include="Stringed\ITunable.cs" />
     <Compile Include="Note.cs" />
     <Compile Include="Scale.cs" />
-    <Compile Include="Stringed\StringedConfig.cs" />
+    <Compile Include="Stringed\StringedInstrument.cs" />
     <Compile Include="Stringed\StringedVisualisation.cs" />
     <Compile Include="Test.cs" />
     <Compile Include="Tuning.cs" />

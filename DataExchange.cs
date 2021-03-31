@@ -8,7 +8,7 @@ namespace Scale_Trainer
         private static readonly string tuningPath = @"data/tunings.xml";
         private static readonly string scalePath = @"data/scales.xml";
 
-        public static Note[] GetTuningFromXML(StringedConfig instrument, string tuningName)
+        public static Note[] GetTuningFromXML(StringedInstrument instrument, string tuningName)
         {
             Note[] notes = new Note[instrument.Strings];
             string strInstrument = instrument.GetType().Name;

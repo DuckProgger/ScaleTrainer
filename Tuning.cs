@@ -7,7 +7,7 @@
         /// </summary>
         public Note[] Notes { get; private set; } 
 
-        public Tuning(StringedConfig instrument, string tuningName)
+        public Tuning(StringedInstrument instrument, string tuningName)
         {
             Notes = DataExchange.GetTuningFromXML(instrument, tuningName);
         }

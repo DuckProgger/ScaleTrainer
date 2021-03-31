@@ -52,9 +52,15 @@
         <TextBlock HorizontalAlignment="Left" Height="21" Margin="200,47.96,0,0" TextWrapping="Wrap" Text="Основная нота" VerticalAlignment="Top" Width="115"/>
         <Image HorizontalAlignment="Left" Height="87" Margin="10,124,0,0" VerticalAlignment="Top" Width="767" Source="Neck.png"/>
 
-        <Grid Name="Neck" HorizontalAlignment="Left" Height="87" Margin="25,124,0,0" VerticalAlignment="Top" Width="752">
-            <!--<StaticResource ResourceKey="Fret"/>-->
+        <Grid  Height="87" Margin="10,124,8,0" VerticalAlignment="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.02*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Name="Nut"  Grid.Column="0"/>
+            <Grid Name="Neck" Grid.Column="1"/>
         </Grid>
+
         <TextBlock x:Name="Information" HorizontalAlignment="Left" Height="20" Margin="502.667,283,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="274.333"/>
     </Grid>
 </Window>
