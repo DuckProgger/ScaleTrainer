@@ -51,27 +51,23 @@
             <ComboBoxItem Content="Standard" HorizontalAlignment="Left" />
             <ComboBoxItem Content="D" HorizontalAlignment="Left" />
         </ComboBox>
-        <TextBlock HorizontalAlignment="Left" Height="21" Margin="15,47.48,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="62" Text="Гамма"/>
-        <ComboBox Name="Scale" HorizontalAlignment="Left" Margin="77,47,0,0" 
-                  VerticalAlignment="Top" Width="98" SelectionChanged="Scale_SelectionChanged" 
-                  SelectedIndex="0">
-            <ComboBoxItem Content="Major" HorizontalAlignment="Left" />
-            <ComboBoxItem Content="Mohanangi" HorizontalAlignment="Left" />
-        </ComboBox>
-        <ComboBox x:Name="Key" HorizontalAlignment="Left" Margin="315,47.48,0,0" VerticalAlignment="Top" 
+        <TextBlock HorizontalAlignment="Left" Height="21" Margin="393,157,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="62" Text="Гамма"/>
+
+        <ComboBox x:Name="Key" HorizontalAlignment="Left" Margin="622,11,0,0" VerticalAlignment="Top" 
                   Width="50" SelectionChanged="Key_SelectionChanged" SelectedIndex="1" >
         </ComboBox>
-        <TextBlock HorizontalAlignment="Left" Height="21" Margin="200,47.96,0,0" TextWrapping="Wrap" Text="Основная нота" VerticalAlignment="Top" Width="115"/>
-       
-        <Grid  Height="87" Margin="10,124,8,0" VerticalAlignment="Top">
+        <TextBlock HorizontalAlignment="Left" Height="21" Margin="507,11,0,0" TextWrapping="Wrap" Text="Основная нота" VerticalAlignment="Top" Width="115"/>
+
+        <Grid  Height="87" Margin="10,56,8,0" VerticalAlignment="Top">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="0.02*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Image Source="Neck.png"  Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2"/>
             <Grid Name="Nut"  Grid.Column="0"/>
-            <Grid Name="Neck" Grid.Column="1"/>            
-        </Grid>        
+            <Grid Name="Neck" Grid.Column="1"/>
+        </Grid>
+        <ListBox Name="Scales" HorizontalAlignment="Left" Height="126" Margin="393,183,0,0" VerticalAlignment="Top" Width="389" SelectionChanged="Scales_SelectionChanged"/>
 
     </Grid>
 </Window>

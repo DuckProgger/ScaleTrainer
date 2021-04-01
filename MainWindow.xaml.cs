@@ -26,6 +26,7 @@ namespace Scale_Trainer
         {
             InitializeComponent();
             CreateNeckColumns(maxFrets);
+            GetScaleList();
             ParameterChanged += TryCreateVisualization;
             Key.Items.Add(Note.NoteName.D);
             Key.Items.Add(Note.NoteName.C);
@@ -97,7 +98,7 @@ namespace Scale_Trainer
             for (int i = 0; i < strings; i++)
             {
                 for (int j = 1; j <= frets; j++)
-                {                    
+                {
                     if (guitarVis.AvailableFrets[i, j])
                     {
                         Grid fret = CreateFret(j);
@@ -107,12 +108,12 @@ namespace Scale_Trainer
                     }
                 }
             }
-        }       
+        }
 
         private void CreateFretsOnNut(int strings)
         {
             for (int i = 0; i < strings; i++)
-            {                
+            {
                 if (guitarVis.AvailableFrets[i, 0])
                 {
                     Grid fret = CreateFret(0);
@@ -120,8 +121,8 @@ namespace Scale_Trainer
                     Grid.SetRow(fret, i);
                 }
             }
-        }   
-        
+        }
+
         private Grid CreateFret(int number)
         {
             Ellipse ellipse = new Ellipse()
@@ -189,10 +190,9 @@ namespace Scale_Trainer
             ParameterChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        private void Scale_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void Scales_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ComboBoxItem comboBoxItem = (ComboBoxItem)((ComboBox)sender).SelectedItem;
-            selectedScale = comboBoxItem.Content.ToString();
+            selectedScale = (string)((ListBox)sender).SelectedItem;
             ParameterChanged?.Invoke(this, EventArgs.Empty);
         }
 
@@ -200,6 +200,11 @@ namespace Scale_Trainer
         {
             selectedKey = (Note.NoteName)((ComboBox)sender).SelectedItem;
             ParameterChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void GetScaleList()
+        {             
+            Scales.ItemsSource = DataExchange.GetScaleListFromXML(); ;
         }
     }
 }
