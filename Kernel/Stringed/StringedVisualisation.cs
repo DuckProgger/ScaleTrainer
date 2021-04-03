@@ -42,14 +42,14 @@ namespace Scale_Trainer
 
             void FindFirstCoincidentFretOnString(int @string)
             {
-                Note.NoteName fretNote = instrument.Tuning.Notes[@string].CurNote;
-                for (int fret = 0; fret < 12; fret++, fretNote++) // на октаве по-любому найдётся совпадение с нотой гаммы
+                Note fretNote = instrument.Tuning.Notes[@string];
+                for (int fret = 0; fret < 12; fret++, fretNote.NextNote()) // на октаве по-любому найдётся совпадение с нотой гаммы
                 {
                     Scale tempScale = new Scale(scale); // скопировать гамму, чтобы не измененять основную в цикле
 
                     foreach (Note scaleNote in tempScale)
                     {
-                        if (fretNote == scaleNote.CurNote)
+                        if (fretNote.CurNote == scaleNote.CurNote)
                         {
                             SetAvailableFrets(@string, fret, tempScale);
                             break;
