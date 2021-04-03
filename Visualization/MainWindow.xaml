@@ -1,10 +1,10 @@
 ﻿<Window x:Class="Scale_Trainer.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"       
-        Title="Визуализатор гамм" Height="200" Width="1550">    
-    
+        Title="Визуализатор гамм" Height="200" Width="1550" MinWidth="962" MinHeight="143" ScrollViewer.VerticalScrollBarVisibility="Disabled" Visibility="Visible" WindowStartupLocation="CenterScreen" >
+
     <Grid x:Name="LayoutRoot" Background="{StaticResource Backgroung}" >
-        
+
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.035*"/>
             <ColumnDefinition Width="*"/>
@@ -12,7 +12,7 @@
 
         <Grid Grid.Column="0">
             <Button MaxHeight="30" MaxWidth="30" Background="#FF90A6E2" Click="Settings_Click">
-                <Image Source="Seetings.png"/>
+                <Image Source="Settings.png"/>
             </Button>
         </Grid>
 
@@ -26,6 +26,6 @@
             <Grid Name="Nut"  Grid.Column="0"/>
             <Grid Name="Neck" Grid.Column="1"/>
         </Grid>
-
+       
     </Grid>
 </Window>

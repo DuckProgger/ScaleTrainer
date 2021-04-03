@@ -9,7 +9,14 @@ namespace Scale_Trainer
     /// Логика взаимодействия для MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
-    {
+    {     
+        public MainWindow()
+        {
+            InitializeComponent();
+            CreateNeckColumns(maxFrets);            
+            ParameterChanged += TryCreateVisualization;           
+        }
+
         public int? selectedStrings, selectedFrets;
         public string selectedTuning, selectedScale;
         internal Note.NoteName selectedKey;
@@ -19,15 +26,7 @@ namespace Scale_Trainer
         private int fret = 0;
         private double[] fretRanges;
         public event EventHandler ParameterChanged;
-
         private readonly int maxFrets = 24;
-
-        public MainWindow()
-        {
-            InitializeComponent();
-            CreateNeckColumns(maxFrets);            
-            ParameterChanged += TryCreateVisualization;           
-        }
 
         private void TryCreateVisualization(object sender, EventArgs e)
         {
@@ -167,6 +166,11 @@ namespace Scale_Trainer
         private void Settings_Click(object sender, RoutedEventArgs e)
         {
             new Settings().Show();
+        }
+
+        protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
+        {
+            Height = Math.Pow(Width, 0.725);
         }
     }
 }

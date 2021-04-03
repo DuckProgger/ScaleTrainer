@@ -2,8 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Style x:Key="Fret">
         <Setter Property="Shape.Fill" Value="LightSkyBlue" />
-        <Setter Property="FrameworkElement.Width" Value="13"/>
-        <Setter Property="FrameworkElement.Height" Value="13"/>
+        <Setter Property="FrameworkElement.MaxWidth" Value="25"/>
+        <Setter Property="FrameworkElement.MaxHeight" Value="25"/>
     </Style>
     <Style x:Key="FretNumber">
         <Setter Property="FrameworkElement.VerticalAlignment" Value="Center"/>

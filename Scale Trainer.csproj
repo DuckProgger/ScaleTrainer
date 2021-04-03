@@ -143,5 +143,8 @@
   <ItemGroup>
     <Resource Include="Visualization\Neck.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Visualization\Settings.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
