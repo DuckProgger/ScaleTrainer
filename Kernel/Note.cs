@@ -2,7 +2,7 @@
 
 namespace Scale_Trainer
 {
-    internal class Note
+    public class Note
     {
         public NoteName CurNote { get; set; }
         public enum NoteName : byte { C = 1, C_sh = 2, D = 3, D_sh = 4, E = 5, F = 6, F_sh = 7, G = 8, G_sh = 9, A = 10, A_sh = 11, B = 12 }

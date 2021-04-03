@@ -72,18 +72,25 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Stringed\Bass.cs" />
-    <Compile Include="DataExchange.cs" />
-    <Compile Include="Stringed\Guitar.cs" />
-    <Compile Include="Stringed\ITunable.cs" />
-    <Compile Include="Note.cs" />
-    <Compile Include="Scale.cs" />
-    <Compile Include="Stringed\StringedInstrument.cs" />
-    <Compile Include="Stringed\StringedVisualisation.cs" />
-    <Compile Include="Test.cs" />
-    <Compile Include="Tuning.cs" />
-    <Compile Include="Validate.cs" />
-    <Page Include="MainWindow.xaml">
+    <Compile Include="Visualization\Settings.xaml.cs">
+      <DependentUpon>Settings.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Kernel\Stringed\Bass.cs" />
+    <Compile Include="Kernel\DataExchange.cs" />
+    <Compile Include="Kernel\Stringed\Guitar.cs" />
+    <Compile Include="Kernel\Stringed\ITunable.cs" />
+    <Compile Include="Kernel\Note.cs" />
+    <Compile Include="Kernel\Scale.cs" />
+    <Compile Include="Kernel\Stringed\StringedInstrument.cs" />
+    <Compile Include="Kernel\Stringed\StringedVisualisation.cs" />
+    <Compile Include="Kernel\Test.cs" />
+    <Compile Include="Kernel\Tuning.cs" />
+    <Compile Include="Kernel\Validate.cs" />
+    <Page Include="Visualization\Dictionary1.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Visualization\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -91,10 +98,14 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="Visualization\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Visualization\Settings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -130,7 +141,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Neck.png" />
+    <Resource Include="Visualization\Neck.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

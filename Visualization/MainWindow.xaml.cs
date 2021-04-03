@@ -10,26 +10,23 @@ namespace Scale_Trainer
     /// </summary>
     public partial class MainWindow : Window
     {
-        private int? selectedStrings, selectedFrets;
-        private string selectedTuning, selectedScale;
-        private Note.NoteName selectedKey;
+        public int? selectedStrings, selectedFrets;
+        public string selectedTuning, selectedScale;
+        internal Note.NoteName selectedKey;
         private Guitar guitar;
         private Scale scale;
         private StringedVisualisation guitarVis;
         private int fret = 0;
         private double[] fretRanges;
+        public event EventHandler ParameterChanged;
 
-        private event EventHandler ParameterChanged;
         private readonly int maxFrets = 24;
 
         public MainWindow()
         {
             InitializeComponent();
-            CreateNeckColumns(maxFrets);
-            GetScaleList();
-            ParameterChanged += TryCreateVisualization;
-            Key.Items.Add(Note.NoteName.D);
-            Key.Items.Add(Note.NoteName.C);
+            CreateNeckColumns(maxFrets);            
+            ParameterChanged += TryCreateVisualization;           
         }
 
         private void TryCreateVisualization(object sender, EventArgs e)
@@ -59,6 +56,11 @@ namespace Scale_Trainer
             }
         }
 
+        public void InvokeEvent()
+        {
+            ParameterChanged?.Invoke(this, EventArgs.Empty);
+        }
+
         private bool AllParametersSet()
         {
             return selectedStrings.HasValue && selectedFrets.HasValue && selectedTuning != null && selectedScale != null && selectedKey != 0;
@@ -66,7 +68,7 @@ namespace Scale_Trainer
 
         private void CreateNeckColumns(int number)
         {
-            fretRanges = new double[selectedFrets.Value];
+            fretRanges = new double[number];
             CalcFretRanges(1.0);
             for (int i = 0; i < number; i++)
             {
@@ -142,7 +144,7 @@ namespace Scale_Trainer
 
         private void CalcFretRanges(double value)
         {
-            if (fret < selectedFrets.Value)
+            if (fret < maxFrets)
             {
                 double temp = value / Math.Pow(2, 0.083333);
                 fretRanges[fret] = value - temp;
@@ -162,49 +164,9 @@ namespace Scale_Trainer
             }
         }
 
-        private void Strings_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void Settings_Click(object sender, RoutedEventArgs e)
         {
-            ComboBoxItem comboBoxItem = (ComboBoxItem)((ComboBox)sender).SelectedItem;
-            if (int.TryParse(comboBoxItem.Content.ToString(), out int temp))
-            {
-                selectedStrings = temp;
-            }
-            ParameterChanged?.Invoke(this, EventArgs.Empty);
-        }
-
-        private void Frets_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            ComboBoxItem comboBoxItem = (ComboBoxItem)((ComboBox)sender).SelectedItem;
-            if (int.TryParse(comboBoxItem.Content.ToString(), out int temp))
-            {
-                selectedFrets = temp;
-            }
-
-            ParameterChanged?.Invoke(this, EventArgs.Empty);
-        }
-
-        private void Tuning_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            ComboBoxItem comboBoxItem = (ComboBoxItem)((ComboBox)sender).SelectedItem;
-            selectedTuning = comboBoxItem.Content.ToString();
-            ParameterChanged?.Invoke(this, EventArgs.Empty);
-        }
-
-        private void Scales_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            selectedScale = (string)((ListBox)sender).SelectedItem;
-            ParameterChanged?.Invoke(this, EventArgs.Empty);
-        }
-
-        private void Key_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            selectedKey = (Note.NoteName)((ComboBox)sender).SelectedItem;
-            ParameterChanged?.Invoke(this, EventArgs.Empty);
-        }
-
-        private void GetScaleList()
-        {             
-            Scales.ItemsSource = DataExchange.GetScaleListFromXML(); ;
+            new Settings().Show();
         }
     }
 }
