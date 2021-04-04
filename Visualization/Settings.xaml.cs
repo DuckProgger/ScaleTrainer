@@ -49,7 +49,7 @@ namespace Scale_Trainer
             {
                 main.selectedStrings = temp;
             }
-            main.InvokeEvent();
+            main.InvokeParameterChangedEvent();
         }
 
         private void Frets_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -61,7 +61,7 @@ namespace Scale_Trainer
                 main.selectedFrets = temp;
             }
 
-            main.InvokeEvent();
+            main.InvokeParameterChangedEvent();
         }
 
         private void Tuning_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -69,26 +69,26 @@ namespace Scale_Trainer
             if (main == null) return;
             ComboBoxItem comboBoxItem = (ComboBoxItem)((ComboBox)sender).SelectedItem;
             main.selectedTuning = comboBoxItem.Content.ToString();
-            main.InvokeEvent();
+            main.InvokeParameterChangedEvent();
         }
 
         private void Scales_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (main == null) return;
             main.selectedScale = (string)((ListBox)sender).SelectedItem;
-            main.InvokeEvent();
+            main.InvokeParameterChangedEvent();
         }
 
         private void Key_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (main == null) return;
             main.selectedKey = (Note.NoteName)((ComboBox)sender).SelectedItem;
-            main.InvokeEvent();
+            main.InvokeParameterChangedEvent();
         }
 
         private void GetScaleList()
         {
-            Scales.ItemsSource = DataExchange.GetScaleListFromXML(); ;
+            Scales.ItemsSource = DataExchange.GetScaleListFromXml(); ;
         }
     }
 }

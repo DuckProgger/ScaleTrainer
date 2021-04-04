@@ -65,15 +65,15 @@ namespace Scale_Trainer
             // Найти все лады, соответствующие гамме, начиная с первого совпадающего лада
             void SetAvailableFrets(int @string, int startFret, Scale scale) // в гамме, переданной в качестве аргумента, текущая нота соответствует ноте текущего лада
             {
-                Note.NoteName seachedNote = scale.GetCurrentNote().CurNote;
+                Note seachedNote = scale.GetCurrentNote();
 
                 for (int fret = startFret; fret <= instrument.Frets; fret++)
                 {
-                    if (notes[@string, fret].CurNote == seachedNote)
+                    if (notes[@string, fret].CurNote == seachedNote.CurNote)
                     {
                         AvailableFrets[@string, fret] = true;
                         scale.MoveNext();
-                        seachedNote = scale.GetCurrentNote().CurNote;
+                        seachedNote = scale.GetCurrentNote();
                     }
                 }
 

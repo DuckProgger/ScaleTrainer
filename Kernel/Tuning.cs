@@ -9,7 +9,7 @@
 
         public Tuning(StringedInstrument instrument, string tuningName)
         {
-            Notes = DataExchange.GetTuningFromXML(instrument, tuningName);
+            Notes = DataExchange.GetTuningFromXml(instrument, tuningName);
         }
     }
 }

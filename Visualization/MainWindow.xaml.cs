@@ -55,7 +55,7 @@ namespace Scale_Trainer
             }
         }
 
-        public void InvokeEvent()
+        public void InvokeParameterChangedEvent()
         {
             ParameterChanged?.Invoke(this, EventArgs.Empty);
         }

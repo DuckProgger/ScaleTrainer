@@ -8,7 +8,7 @@ namespace Scale_Trainer
         private static readonly string tuningPath = @"data/tunings.xml";
         private static readonly string scalePath = @"data/scales.xml";
 
-        public static Note[] GetTuningFromXML(StringedInstrument instrument, string tuningName)
+        public static Note[] GetTuningFromXml(StringedInstrument instrument, string tuningName)
         {
             Note[] notes = new Note[instrument.Strings];
             string strInstrument = instrument.GetType().Name;
@@ -37,7 +37,7 @@ namespace Scale_Trainer
             return notes;
         }
                
-        public static string[] GetScaleListFromXML()
+        public static string[] GetScaleListFromXml()
         {
             XmlNodeList list = GetNodesByXpath(scalePath, "scale[@name]");
             string[] strList = new string[list.Count];
@@ -48,6 +48,14 @@ namespace Scale_Trainer
             }
 
             return strList;
+        }
+
+        public static string[] GetTuningNamesFromXml(StringedInstrument instrument)
+        {
+            string[] tuningNames;
+            XmlNodeList list = GetNodesByXpath(scalePath, "tuning[@name]");
+            string strInstrument = instrument.GetType().Name;
+
         }
 
         public static bool TryFindScale(string name, out Scale scale)

@@ -5,42 +5,75 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Scale_Trainer"
         mc:Ignorable="d"
-        Title="Settings" Height="450" Width="800">
+        Title="Settings" Height="400" Width="600" ResizeMode="NoResize">
     <Grid Background="{StaticResource Backgroung}">
-        <ComboBox Name="Strings" HorizontalAlignment="Left" Margin="125,10,0,0" 
-                  VerticalAlignment="Top" Width="50" SelectedIndex="2" 
-                  SelectionChanged="Strings_SelectionChanged" >
-            <ComboBoxItem Content="4" HorizontalAlignment="Left" />
-            <ComboBoxItem Content="5" HorizontalAlignment="Left" />
-            <ComboBoxItem Content="6" HorizontalAlignment="Left" />
-            <ComboBoxItem Content="7" HorizontalAlignment="Left" />
-            <ComboBoxItem Content="8" HorizontalAlignment="Left" />
-        </ComboBox>
-        <TextBlock HorizontalAlignment="Left" Height="21" Margin="10,10.48,0,0" TextWrapping="Wrap" Text="Количество струн" VerticalAlignment="Top" Width="115"/>
-        <TextBlock HorizontalAlignment="Left" Height="21" Margin="185,10.48,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="105"><Run Text="Количество "/><Run Text="ладов"/></TextBlock>
-        <ComboBox Name="Frets" HorizontalAlignment="Left" Margin="295,10,0,0" 
-                  VerticalAlignment="Top" Width="42" SelectionChanged="Frets_SelectionChanged" 
-                  SelectedIndex="4">
-            <ComboBoxItem Content="20" HorizontalAlignment="Left" />
-            <ComboBoxItem Content="21" HorizontalAlignment="Left" />
-            <ComboBoxItem Content="22" HorizontalAlignment="Left" />
-            <ComboBoxItem Content="23" HorizontalAlignment="Left" />
-            <ComboBoxItem Content="24" HorizontalAlignment="Left" />
-        </ComboBox>
-        <TextBlock HorizontalAlignment="Left" Height="21" Margin="354,10.96,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="45" Text="Строй"/>
-        <ComboBox Name="Tuning" HorizontalAlignment="Left" Margin="404,9.52,0,0" 
-                  VerticalAlignment="Top" Width="77" SelectionChanged="Tuning_SelectionChanged" 
-                  SelectedIndex="0">
-            <ComboBoxItem Content="Standard" HorizontalAlignment="Left" />
-            <ComboBoxItem Content="D" HorizontalAlignment="Left" />
-        </ComboBox>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.4*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="0.4*"/>
+        </Grid.RowDefinitions>
 
-        <TextBlock HorizontalAlignment="Left" Height="21" Margin="10,47,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="62" Text="Гамма"/>
-        <ListBox Name="Scales" HorizontalAlignment="Left" Height="126" Margin="10,73,0,0" VerticalAlignment="Top" Width="389" SelectionChanged="Scales_SelectionChanged"/>
-        <ComboBox x:Name="Key" HorizontalAlignment="Left" Margin="125,226,0,0" VerticalAlignment="Top" 
-                  Width="50" SelectionChanged="Key_SelectionChanged" SelectedIndex="1" >
-        </ComboBox>
-        <TextBlock HorizontalAlignment="Left" Height="22" Margin="10,226,0,0" TextWrapping="Wrap" Text="Основная нота" VerticalAlignment="Top" Width="115"/>
+        <GroupBox Header="Инструмент"  Grid.Row="0" Grid.Column="0"
+                       Style="{StaticResource SettingCell}">
+            <ComboBox x:Name="Instrument" Style="{StaticResource ComboBox}"  
+                     SelectedIndex="0" SelectionChanged="Tuning_SelectionChanged">
+                <ComboBoxItem Content="Гитара" HorizontalAlignment="Left" />
+                <ComboBoxItem Content="Басс гитара" HorizontalAlignment="Left" />
+            </ComboBox>
+        </GroupBox>
 
+        <GroupBox Header="Количество струн"  Grid.Row="0" Grid.Column="1"
+                   Style="{StaticResource SettingCell}">
+            <ComboBox Name="Strings" Style="{StaticResource ComboBox}" 
+                      SelectedIndex="2" SelectionChanged="Strings_SelectionChanged" >
+                <ComboBoxItem Content="4" HorizontalAlignment="Left" />
+                <ComboBoxItem Content="5" HorizontalAlignment="Left" />
+                <ComboBoxItem Content="6" HorizontalAlignment="Left" />
+                <ComboBoxItem Content="7" HorizontalAlignment="Left" />
+                <ComboBoxItem Content="8" HorizontalAlignment="Left" />
+            </ComboBox>
+        </GroupBox>
+
+        <GroupBox Header="Количество ладов" Grid.Row="0" Grid.Column="2"
+                  Style="{StaticResource SettingCell}">
+            <ComboBox Name="Frets" Style="{StaticResource ComboBox}" 
+                  SelectedIndex="4" SelectionChanged="Frets_SelectionChanged">
+                <ComboBoxItem Content="20" HorizontalAlignment="Left" />
+                <ComboBoxItem Content="21" HorizontalAlignment="Left" />
+                <ComboBoxItem Content="22" HorizontalAlignment="Left" />
+                <ComboBoxItem Content="23" HorizontalAlignment="Left" />
+                <ComboBoxItem Content="24" HorizontalAlignment="Left" />
+            </ComboBox>
+        </GroupBox>
+
+        <GroupBox Header="Строй" Grid.Row="0" Grid.Column="3"
+                  Style="{StaticResource SettingCell}">
+            <ComboBox Name="Tuning" Style="{StaticResource ComboBox}"  
+                  SelectedIndex="0" SelectionChanged="Tuning_SelectionChanged">
+                <ComboBoxItem Content="Standard" HorizontalAlignment="Left" />
+                <ComboBoxItem Content="D" HorizontalAlignment="Left" />
+            </ComboBox>
+        </GroupBox>
+
+        <GroupBox Header="Основная нота" Grid.Row="2" Grid.Column="0"
+                  Style="{StaticResource SettingCell}">
+            <ComboBox x:Name="Key" Style="{StaticResource ComboBox}"
+                   SelectedIndex="1" SelectionChanged="Key_SelectionChanged">
+            </ComboBox>
+        </GroupBox>
+
+        <GroupBox Header="Звукоряд" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4"
+                  Style="{StaticResource SettingCell}">
+            <ListBox Name="Scales" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+                     SelectionChanged="Scales_SelectionChanged" Margin="10"/>
+        </GroupBox>
+        
     </Grid>
+    
 </Window>
