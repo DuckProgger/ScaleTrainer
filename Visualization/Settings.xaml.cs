@@ -62,7 +62,6 @@ namespace Scale_Trainer
                         break;
                     }
             }
-
             main.InvokeParameterChangedEvent();
         }
 
@@ -95,14 +94,13 @@ namespace Scale_Trainer
             {
                 main.SelectedFrets = temp;
             }
-
             main.InvokeParameterChangedEvent();
         }
 
         private void Tuning_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ComboBoxItem comboBoxItem = (ComboBoxItem)((ComboBox)sender).SelectedItem;
-            main.SelectedTuning = comboBoxItem.Content.ToString();
+            string comboBoxItem = (string)((ComboBox)sender).SelectedItem;
+            main.SelectedTuning = comboBoxItem;
             main.InvokeParameterChangedEvent();
         }
 
@@ -114,6 +112,7 @@ namespace Scale_Trainer
 
         private void Key_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (main == null) return;
             main.selectedKey = (Note.NoteName)((ComboBox)sender).SelectedItem;
             main.InvokeParameterChangedEvent();
         }
@@ -125,7 +124,7 @@ namespace Scale_Trainer
 
         private void GetTuningList(string engName)
         {
-            Key.ItemsSource = DataExchange.GetTuningNamesFromXml(engName);
+            Tuning.ItemsSource = DataExchange.GetTuningNamesFromXml(engName);
         }
     }
 }

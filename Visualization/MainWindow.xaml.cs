@@ -59,6 +59,8 @@ namespace Scale_Trainer
                     case nameof(Bass):
                         Instrument = new Bass(SelectedStrings.Value, SelectedFrets.Value, SelectedTuning);
                         break;
+                    default:
+                        throw new NotImplementedException();
                 }               
                 scale = new Scale(SelectedScale, selectedKey);
                 guitarVis = new StringedVisualisation(Instrument, scale);

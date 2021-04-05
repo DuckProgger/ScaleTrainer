@@ -56,8 +56,6 @@
                   Style="{StaticResource SettingCell}">
             <ComboBox Name="Tuning" Style="{StaticResource ComboBox}"  
                   SelectedIndex="0" SelectionChanged="Tuning_SelectionChanged">
-                <ComboBoxItem Content="Standard" HorizontalAlignment="Left" />
-                <ComboBoxItem Content="D" HorizontalAlignment="Left" />
             </ComboBox>
         </GroupBox>
 
