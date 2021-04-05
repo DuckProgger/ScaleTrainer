@@ -53,7 +53,6 @@ namespace Scale_Trainer
 
         public static string[] GetTuningNamesFromXml(string instrumentName)
         {
-            //string strInstrument = instrumentName.GetType().Name;
             XmlNodeList list = GetNodesByXpath(tuningPath, "tuning[@name]");
             List<string> tuningNamesList = new List<string>(50);
             foreach (XmlNode item in list)
@@ -126,8 +125,6 @@ namespace Scale_Trainer
             XmlNodeList xNodes = xRoot.SelectNodes(xPath);
 
             return xNodes;
-        }
-
-        
+        }        
     }
 }

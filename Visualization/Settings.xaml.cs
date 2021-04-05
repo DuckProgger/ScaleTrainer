@@ -25,13 +25,11 @@ namespace Scale_Trainer
             InitializeComponent();
             GetScaleList();
             GetTuningList(ConvertInstrumentName(instrumentName));
-
-            Key.Items.Add(Note.NoteName.D);
-            Key.Items.Add(Note.NoteName.C);
+            GetKeyList();
         }
 
-        MainWindow main;
-        string instrumentName;
+        private readonly MainWindow main;
+        private string instrumentName;
 
         private MainWindow GetMainWindowObj()
         {
@@ -52,15 +50,11 @@ namespace Scale_Trainer
             switch (instrumentName)
             {
                 case "Гитара":
-                    {
-                        main.SelectedInstrument = typeof(Guitar);
-                        break;
-                    }
+                    main.SelectedInstrument = typeof(Guitar);
+                    break;
                 case "Бас гитара":
-                    {
-                        main.SelectedInstrument = typeof(Bass);
-                        break;
-                    }
+                    main.SelectedInstrument = typeof(Bass);
+                    break;
             }
             main.InvokeParameterChangedEvent();
         }
@@ -112,7 +106,6 @@ namespace Scale_Trainer
 
         private void Key_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (main == null) return;
             main.selectedKey = (Note.NoteName)((ComboBox)sender).SelectedItem;
             main.InvokeParameterChangedEvent();
         }
@@ -125,6 +118,14 @@ namespace Scale_Trainer
         private void GetTuningList(string engName)
         {
             Tuning.ItemsSource = DataExchange.GetTuningNamesFromXml(engName);
+        }
+
+        private void GetKeyList()
+        {
+            for (Note.NoteName key = Note.NoteName.C; key <= Note.NoteName.B; key++)
+            {
+                Key.Items.Add(key);
+            }
         }
     }
 }
