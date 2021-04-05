@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Xml;
+using System.Collections.Generic;
 
 namespace Scale_Trainer
 {
@@ -50,12 +51,21 @@ namespace Scale_Trainer
             return strList;
         }
 
-        public static string[] GetTuningNamesFromXml(StringedInstrument instrument)
+        public static string[] GetTuningNamesFromXml(string instrumentName)
         {
-            string[] tuningNames;
-            XmlNodeList list = GetNodesByXpath(scalePath, "tuning[@name]");
-            string strInstrument = instrument.GetType().Name;
-
+            //string strInstrument = instrumentName.GetType().Name;
+            XmlNodeList list = GetNodesByXpath(tuningPath, "tuning[@name]");
+            List<string> tuningNamesList = new List<string>(50);
+            foreach (XmlNode item in list)
+            {
+                string nodeName = item.Attributes.GetNamedItem("name").Value;
+                string nodeInstrument = item.Attributes.GetNamedItem("instrument").Value;
+                if (nodeInstrument == instrumentName && !tuningNamesList.Contains(nodeName))
+                {
+                    tuningNamesList.Add(nodeName);
+                }
+            }
+            return tuningNamesList.ToArray();
         }
 
         public static bool TryFindScale(string name, out Scale scale)
@@ -117,5 +127,7 @@ namespace Scale_Trainer
 
             return xNodes;
         }
+
+        
     }
 }

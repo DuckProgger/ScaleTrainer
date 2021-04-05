@@ -1,6 +1,6 @@
 ﻿namespace Scale_Trainer
 {
-    internal abstract class StringedInstrument : ITunable
+    public abstract class StringedInstrument : ITunable
     {
         /// <summary>
         /// Количество струн струнного инструмента.

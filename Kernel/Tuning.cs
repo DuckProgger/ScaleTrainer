@@ -1,6 +1,6 @@
 ﻿namespace Scale_Trainer
 {
-    internal sealed class Tuning
+    public sealed class Tuning
     {
         /// <summary>
         /// Ноты открытых струн инструмента.

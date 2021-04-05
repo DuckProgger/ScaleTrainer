@@ -19,16 +19,19 @@ namespace Scale_Trainer
     /// </summary>
     public partial class Settings : Window
     {
-        MainWindow main;
-
         public Settings()
         {
             main = GetMainWindowObj();
             InitializeComponent();
             GetScaleList();
+            GetTuningList(ConvertInstrumentName(instrumentName));
+
             Key.Items.Add(Note.NoteName.D);
             Key.Items.Add(Note.NoteName.C);
         }
+
+        MainWindow main;
+        string instrumentName;
 
         private MainWindow GetMainWindowObj()
         {
@@ -42,23 +45,55 @@ namespace Scale_Trainer
             return null;
         }
 
+        private void Instrument_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBoxItem comboBoxItem = (ComboBoxItem)((ComboBox)sender).SelectedItem;
+            instrumentName = comboBoxItem.Content.ToString();
+            switch (instrumentName)
+            {
+                case "Гитара":
+                    {
+                        main.SelectedInstrument = typeof(Guitar);
+                        break;
+                    }
+                case "Бас гитара":
+                    {
+                        main.SelectedInstrument = typeof(Bass);
+                        break;
+                    }
+            }
+
+            main.InvokeParameterChangedEvent();
+        }
+
+        public static string ConvertInstrumentName(string rusName)
+        {
+            switch (rusName)
+            {
+                case "Гитара":
+                    return "Guitar";
+                case "Бас гитара":
+                    return "Bass";
+            }
+            throw new NotImplementedException();
+        }
+
         private void Strings_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ComboBoxItem comboBoxItem = (ComboBoxItem)((ComboBox)sender).SelectedItem;
             if (int.TryParse(comboBoxItem.Content.ToString(), out int temp))
             {
-                main.selectedStrings = temp;
+                main.SelectedStrings = temp;
             }
             main.InvokeParameterChangedEvent();
         }
 
         private void Frets_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (main == null) return;
             ComboBoxItem comboBoxItem = (ComboBoxItem)((ComboBox)sender).SelectedItem;
             if (int.TryParse(comboBoxItem.Content.ToString(), out int temp))
             {
-                main.selectedFrets = temp;
+                main.SelectedFrets = temp;
             }
 
             main.InvokeParameterChangedEvent();
@@ -66,29 +101,31 @@ namespace Scale_Trainer
 
         private void Tuning_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (main == null) return;
             ComboBoxItem comboBoxItem = (ComboBoxItem)((ComboBox)sender).SelectedItem;
-            main.selectedTuning = comboBoxItem.Content.ToString();
+            main.SelectedTuning = comboBoxItem.Content.ToString();
             main.InvokeParameterChangedEvent();
         }
 
         private void Scales_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (main == null) return;
-            main.selectedScale = (string)((ListBox)sender).SelectedItem;
+            main.SelectedScale = (string)((ListBox)sender).SelectedItem;
             main.InvokeParameterChangedEvent();
         }
 
         private void Key_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (main == null) return;
             main.selectedKey = (Note.NoteName)((ComboBox)sender).SelectedItem;
             main.InvokeParameterChangedEvent();
         }
 
         private void GetScaleList()
         {
-            Scales.ItemsSource = DataExchange.GetScaleListFromXml(); ;
+            Scales.ItemsSource = DataExchange.GetScaleListFromXml();
+        }
+
+        private void GetTuningList(string engName)
+        {
+            Key.ItemsSource = DataExchange.GetTuningNamesFromXml(engName);
         }
     }
 }

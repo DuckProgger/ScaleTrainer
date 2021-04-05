@@ -9,24 +9,31 @@ namespace Scale_Trainer
     /// Логика взаимодействия для MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
-    {     
+    {
         public MainWindow()
         {
             InitializeComponent();
-            CreateNeckColumns(maxFrets);            
-            ParameterChanged += TryCreateVisualization;           
+            CreateNeckColumns(maxFrets);
+            settingsWindow = new Settings();
+            ParameterChanged += TryCreateVisualization;
         }
 
-        public int? selectedStrings, selectedFrets;
-        public string selectedTuning, selectedScale;
+        internal int? SelectedStrings { get; set; }
+        internal int? SelectedFrets { get; set; }
+        internal Type SelectedInstrument { get; set; }
+        internal string SelectedTuning { get; set; }
+        internal string SelectedScale { get; set; }
         internal Note.NoteName selectedKey;
-        private Guitar guitar;
+
+        private StringedInstrument Instrument { get; set; }
         private Scale scale;
         private StringedVisualisation guitarVis;
         private int fret = 0;
         private double[] fretRanges;
-        public event EventHandler ParameterChanged;
         private readonly int maxFrets = 24;
+        private Settings settingsWindow;
+
+        public event EventHandler ParameterChanged;
 
         private void TryCreateVisualization(object sender, EventArgs e)
         {
@@ -44,14 +51,22 @@ namespace Scale_Trainer
         {
             if (AllParametersSet())
             {
-                guitar = new Guitar(selectedStrings.Value, selectedFrets.Value, selectedTuning);
-                scale = new Scale(selectedScale, selectedKey);
-                guitarVis = new StringedVisualisation(guitar, scale);
+                switch (SelectedInstrument.Name)
+                {
+                    case nameof(Guitar):
+                        Instrument = new Guitar(SelectedStrings.Value, SelectedFrets.Value, SelectedTuning);
+                        break;
+                    case nameof(Bass):
+                        Instrument = new Bass(SelectedStrings.Value, SelectedFrets.Value, SelectedTuning);
+                        break;
+                }               
+                scale = new Scale(SelectedScale, selectedKey);
+                guitarVis = new StringedVisualisation(Instrument, scale);
                 ClearNeck();
-                CreateNeckRows(selectedStrings.Value);
-                CreateNutRows(selectedStrings.Value);
-                CreateFretsOnNeck(selectedStrings.Value, selectedFrets.Value);
-                CreateFretsOnNut(selectedStrings.Value);
+                CreateNeckRows(SelectedStrings.Value);
+                CreateNutRows(SelectedStrings.Value);
+                CreateFretsOnNeck(SelectedStrings.Value, SelectedFrets.Value);
+                CreateFretsOnNut(SelectedStrings.Value);
             }
         }
 
@@ -62,7 +77,8 @@ namespace Scale_Trainer
 
         private bool AllParametersSet()
         {
-            return selectedStrings.HasValue && selectedFrets.HasValue && selectedTuning != null && selectedScale != null && selectedKey != 0;
+            return SelectedInstrument != null && SelectedStrings.HasValue && SelectedFrets.HasValue &&
+                SelectedTuning != null && SelectedScale != null && selectedKey != 0;
         }
 
         private void CreateNeckColumns(int number)
@@ -165,7 +181,11 @@ namespace Scale_Trainer
 
         private void Settings_Click(object sender, RoutedEventArgs e)
         {
-            new Settings().Show();
+            if (!settingsWindow.IsActive)
+            {
+                settingsWindow.Show();
+            }
+            else settingsWindow.Activate();
         }
 
         protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
