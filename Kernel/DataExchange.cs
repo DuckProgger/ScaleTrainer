@@ -51,7 +51,7 @@ namespace Scale_Trainer
             return strList;
         }
 
-        public static string[] GetTuningNamesFromXml(string instrumentName)
+        public static string[] GetTuningNamesFromXml(string instrumentName, string strings)
         {
             XmlNodeList list = GetNodesByXpath(tuningPath, "tuning[@name]");
             List<string> tuningNamesList = new List<string>(50);
@@ -59,9 +59,26 @@ namespace Scale_Trainer
             {
                 string nodeName = item.Attributes.GetNamedItem("name").Value;
                 string nodeInstrument = item.Attributes.GetNamedItem("instrument").Value;
-                if (nodeInstrument == instrumentName && !tuningNamesList.Contains(nodeName))
+                string nodeStrings = item.Attributes.GetNamedItem("strings").Value;
+                if (nodeInstrument == instrumentName && strings == nodeStrings && !tuningNamesList.Contains(nodeName))
                 {
                     tuningNamesList.Add(nodeName);
+                }
+            }
+            return tuningNamesList.ToArray();
+        }
+
+        public static string[] GetStringNumberFromXml(string instrumentName)
+        {
+            XmlNodeList list = GetNodesByXpath(tuningPath, "tuning[@name]");
+            List<string> tuningNamesList = new List<string>(5);
+            foreach (XmlNode item in list)
+            {
+                string nodeInstrument = item.Attributes.GetNamedItem("instrument").Value;
+                string nodeStrings = item.Attributes.GetNamedItem("strings").Value;
+                if (nodeInstrument == instrumentName && !tuningNamesList.Contains(nodeStrings))
+                {
+                    tuningNamesList.Add(nodeStrings);
                 }
             }
             return tuningNamesList.ToArray();

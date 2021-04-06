@@ -32,11 +32,6 @@
                    Style="{StaticResource SettingCell}">
             <ComboBox Name="Strings" Style="{StaticResource ComboBox}" 
                       SelectedIndex="2" SelectionChanged="Strings_SelectionChanged" >
-                <ComboBoxItem Content="4" HorizontalAlignment="Left" />
-                <ComboBoxItem Content="5" HorizontalAlignment="Left" />
-                <ComboBoxItem Content="6" HorizontalAlignment="Left" />
-                <ComboBoxItem Content="7" HorizontalAlignment="Left" />
-                <ComboBoxItem Content="8" HorizontalAlignment="Left" />
             </ComboBox>
         </GroupBox>
 

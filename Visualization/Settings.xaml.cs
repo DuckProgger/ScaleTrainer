@@ -24,12 +24,14 @@ namespace Scale_Trainer
             main = GetMainWindowObj();
             InitializeComponent();
             GetScaleList();
-            GetTuningList(ConvertInstrumentName(instrumentName));
+            GetStringNumberList(ConvertInstrumentName(instrumentName));
+           
             GetKeyList();
         }
 
         private readonly MainWindow main;
         private string instrumentName;
+        private string strings;
 
         private MainWindow GetMainWindowObj()
         {
@@ -73,11 +75,12 @@ namespace Scale_Trainer
 
         private void Strings_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ComboBoxItem comboBoxItem = (ComboBoxItem)((ComboBox)sender).SelectedItem;
-            if (int.TryParse(comboBoxItem.Content.ToString(), out int temp))
+            strings = (string)((ComboBox)sender).SelectedItem;
+            if (int.TryParse(strings, out int temp))
             {
                 main.SelectedStrings = temp;
             }
+            GetTuningList(ConvertInstrumentName(instrumentName), strings);
             main.InvokeParameterChangedEvent();
         }
 
@@ -93,8 +96,7 @@ namespace Scale_Trainer
 
         private void Tuning_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            string comboBoxItem = (string)((ComboBox)sender).SelectedItem;
-            main.SelectedTuning = comboBoxItem;
+            main.SelectedTuning = (string)((ComboBox)sender).SelectedItem;           
             main.InvokeParameterChangedEvent();
         }
 
@@ -115,9 +117,14 @@ namespace Scale_Trainer
             Scales.ItemsSource = DataExchange.GetScaleListFromXml();
         }
 
-        private void GetTuningList(string engName)
+        private void GetTuningList(string engName, string strings)
         {
-            Tuning.ItemsSource = DataExchange.GetTuningNamesFromXml(engName);
+            Tuning.ItemsSource = DataExchange.GetTuningNamesFromXml(engName, strings);
+        }
+
+        private void GetStringNumberList(string instrument)
+        {
+            Strings.ItemsSource = DataExchange.GetStringNumberFromXml(instrument);
         }
 
         private void GetKeyList()
