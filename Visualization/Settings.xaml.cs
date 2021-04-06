@@ -25,7 +25,7 @@ namespace Scale_Trainer
             InitializeComponent();
             GetScaleList();
             GetStringNumberList(ConvertInstrumentName(instrumentName));
-           
+            GetTuningList(ConvertInstrumentName(instrumentName), strings);
             GetKeyList();
         }
 
@@ -58,6 +58,8 @@ namespace Scale_Trainer
                     main.SelectedInstrument = typeof(Bass);
                     break;
             }
+            if(Strings != null)
+                GetStringNumberList(ConvertInstrumentName(instrumentName));
             main.InvokeParameterChangedEvent();
         }
 
@@ -120,11 +122,13 @@ namespace Scale_Trainer
         private void GetTuningList(string engName, string strings)
         {
             Tuning.ItemsSource = DataExchange.GetTuningNamesFromXml(engName, strings);
+            Tuning.SelectedIndex = 0;
         }
 
         private void GetStringNumberList(string instrument)
         {
             Strings.ItemsSource = DataExchange.GetStringNumberFromXml(instrument);
+            Strings.SelectedIndex = 0;
         }
 
         private void GetKeyList()

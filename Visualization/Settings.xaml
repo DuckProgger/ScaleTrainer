@@ -31,7 +31,7 @@
         <GroupBox Header="Количество струн"  Grid.Row="0" Grid.Column="1"
                    Style="{StaticResource SettingCell}">
             <ComboBox Name="Strings" Style="{StaticResource ComboBox}" 
-                      SelectedIndex="2" SelectionChanged="Strings_SelectionChanged" >
+                      SelectedIndex="0" SelectionChanged="Strings_SelectionChanged" >
             </ComboBox>
         </GroupBox>
 
@@ -57,7 +57,7 @@
         <GroupBox Header="Основная нота" Grid.Row="2" Grid.Column="0"
                   Style="{StaticResource SettingCell}">
             <ComboBox x:Name="Key" Style="{StaticResource ComboBox}"
-                   SelectedIndex="1" SelectionChanged="Key_SelectionChanged">
+                   SelectedIndex="0" SelectionChanged="Key_SelectionChanged">
             </ComboBox>
         </GroupBox>
 
