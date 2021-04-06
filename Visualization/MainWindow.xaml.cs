@@ -2,6 +2,8 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Shapes;
+using System.Windows.Media.Imaging;
+using System.Text;
 
 namespace Scale_Trainer
 {
@@ -16,6 +18,7 @@ namespace Scale_Trainer
             CreateNeckColumns(maxFrets);
             settingsWindow = new Settings();
             ParameterChanged += TryCreateVisualization;
+            projectPath = Environment.CurrentDirectory;
         }
 
         internal int? SelectedStrings { get; set; }
@@ -24,6 +27,7 @@ namespace Scale_Trainer
         internal string SelectedTuning { get; set; }
         internal string SelectedScale { get; set; }
         internal Note.NoteName selectedKey;
+        internal string projectPath;
 
         private StringedInstrument Instrument { get; set; }
         private Scale scale;
@@ -65,6 +69,7 @@ namespace Scale_Trainer
                 scale = new Scale(SelectedScale, selectedKey);
                 guitarVis = new StringedVisualisation(Instrument, scale);
                 ClearNeck();
+                ChangeNeckImage(SelectedStrings.Value);
                 CreateNeckRows(SelectedStrings.Value);
                 CreateNutRows(SelectedStrings.Value);
                 CreateFretsOnNeck(SelectedStrings.Value, SelectedFrets.Value);
@@ -179,6 +184,21 @@ namespace Scale_Trainer
                 Nut.RowDefinitions.Clear();
                 Nut.Children.Clear();
             }
+        }
+
+        private void ChangeNeckImage(int strings)
+        {            
+            StringBuilder neckSource = new StringBuilder(40);
+            neckSource.Append(projectPath);
+            neckSource.Append(@"\data\Necks\");
+            neckSource.Append(strings.ToString());
+            neckSource.Append("strings.png");
+
+            BitmapImage neckImage = new BitmapImage();
+            neckImage.BeginInit();
+            neckImage.UriSource = new Uri(neckSource.ToString());
+            neckImage.EndInit();
+            NeckImage.Source = neckImage;
         }
 
         private void Settings_Click(object sender, RoutedEventArgs e)
