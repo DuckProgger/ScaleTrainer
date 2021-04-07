@@ -23,8 +23,8 @@
                        Style="{StaticResource SettingCell}">
             <ComboBox x:Name="Instrument" Style="{StaticResource ComboBox}"  
                      SelectedIndex="0" SelectionChanged="Instrument_SelectionChanged">
-                <ComboBoxItem Content="Гитара" HorizontalAlignment="Left" />
-                <ComboBoxItem Content="Бас гитара" HorizontalAlignment="Left" />
+                <!--<ComboBoxItem Content="Гитара" HorizontalAlignment="Left" />
+                <ComboBoxItem Content="Бас гитара" HorizontalAlignment="Left" />-->
             </ComboBox>
         </GroupBox>
 

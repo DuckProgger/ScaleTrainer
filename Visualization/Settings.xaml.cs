@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Reflection;
 
 namespace Scale_Trainer
 {
@@ -23,15 +24,18 @@ namespace Scale_Trainer
         {
             main = GetMainWindowObj();
             InitializeComponent();
+            GetInstrumentList();
             GetScaleList();
-            GetStringNumberList(ConvertInstrumentName(instrumentName));
-            GetTuningList(ConvertInstrumentName(instrumentName), strings);
-            GetKeyList();
+            GetStringNumberList(instrumentType.Name);
+            GetTuningList(instrumentType.Name, strings);
+            GetKeyList();            
         }
 
         private readonly MainWindow main;
         private string instrumentName;
         private string strings;
+        private List<string> instrumentList;
+        private Type instrumentType;
 
         private MainWindow GetMainWindowObj()
         {
@@ -47,33 +51,41 @@ namespace Scale_Trainer
 
         private void Instrument_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ComboBoxItem comboBoxItem = (ComboBoxItem)((ComboBox)sender).SelectedItem;
-            instrumentName = comboBoxItem.Content.ToString();
-            switch (instrumentName)
-            {
-                case "Гитара":
-                    main.SelectedInstrument = typeof(Guitar);
-                    break;
-                case "Бас гитара":
-                    main.SelectedInstrument = typeof(Bass);
-                    break;
-            }
-            if(Strings != null)
-                GetStringNumberList(ConvertInstrumentName(instrumentName));
+            instrumentName = (string)((ComboBox)sender).SelectedItem;           
+            instrumentType = FindTypeByNameAttribute(instrumentName);
+            main.SelectedInstrument = instrumentType;
+            if (Strings != null)
+                GetStringNumberList(instrumentType.Name);
             main.InvokeParameterChangedEvent();
         }
 
-        public static string ConvertInstrumentName(string rusName)
-        {
-            switch (rusName)
+        private Type FindTypeByNameAttribute(string name)
+        {            
+            Type[] types = GetSubclasses(typeof(StringedInstrument));
+            var typesWithNameAttr = from type in types
+                                    let attr = (NameAttribute)type.GetCustomAttribute(typeof(NameAttribute))
+                                    where attr.Name == name
+                                    select type;
+            foreach (Type item in typesWithNameAttr)
             {
-                case "Гитара":
-                    return "Guitar";
-                case "Бас гитара":
-                    return "Bass";
+                return item;
             }
             throw new NotImplementedException();
         }
+
+        private Type[] GetSubclasses(Type baseType)
+        {
+            List<Type> typeList = new List<Type>(3);
+            Type[] types = Assembly.GetAssembly(baseType).GetTypes();
+            var derivedTypes = from type in types
+                               where type.IsSubclassOf(baseType)
+                               select type;
+            foreach (Type item in derivedTypes)
+            {
+                typeList.Add(item);
+            }
+            return typeList.ToArray();
+        }        
 
         private void Strings_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -82,7 +94,7 @@ namespace Scale_Trainer
             {
                 main.SelectedStrings = temp;
             }
-            GetTuningList(ConvertInstrumentName(instrumentName), strings);
+            GetTuningList(instrumentType.Name, strings);
             main.InvokeParameterChangedEvent();
         }
 
@@ -112,6 +124,19 @@ namespace Scale_Trainer
         {
             main.selectedKey = (Note.NoteName)((ComboBox)sender).SelectedItem;
             main.InvokeParameterChangedEvent();
+        }
+
+        private void GetInstrumentList()
+        {
+            instrumentList = new List<string>(3);
+            Type[] derivedTypes = GetSubclasses(typeof(StringedInstrument));
+            foreach (Type type in derivedTypes)
+            {
+                NameAttribute attr = (NameAttribute)type.GetCustomAttribute(typeof(NameAttribute));
+                if(attr != null) 
+                    instrumentList.Add(attr.Name);
+            }                        
+            Instrument.ItemsSource = instrumentList.ToArray();
         }
 
         private void GetScaleList()
