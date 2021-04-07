@@ -73,6 +73,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Kernel\NameAttribute.cs" />
+    <Compile Include="Kernel\Util.cs" />
     <Compile Include="Visualization\Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -11,7 +10,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using System.Reflection;
 
 namespace Scale_Trainer
 {
@@ -34,7 +32,6 @@ namespace Scale_Trainer
         private readonly MainWindow main;
         private string instrumentName;
         private string strings;
-        private List<string> instrumentList;
         private Type instrumentType;
 
         private MainWindow GetMainWindowObj()
@@ -52,39 +49,11 @@ namespace Scale_Trainer
         private void Instrument_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             instrumentName = (string)((ComboBox)sender).SelectedItem;           
-            instrumentType = FindTypeByNameAttribute(instrumentName);
+            instrumentType = Util.FindTypeByNameAttribute(instrumentName);
             main.SelectedInstrument = instrumentType;
             if (Strings != null)
                 GetStringNumberList(instrumentType.Name);
             main.InvokeParameterChangedEvent();
-        }
-
-        private Type FindTypeByNameAttribute(string name)
-        {            
-            Type[] types = GetSubclasses(typeof(StringedInstrument));
-            var typesWithNameAttr = from type in types
-                                    let attr = (NameAttribute)type.GetCustomAttribute(typeof(NameAttribute))
-                                    where attr.Name == name
-                                    select type;
-            foreach (Type item in typesWithNameAttr)
-            {
-                return item;
-            }
-            throw new NotImplementedException();
-        }
-
-        private Type[] GetSubclasses(Type baseType)
-        {
-            List<Type> typeList = new List<Type>(3);
-            Type[] types = Assembly.GetAssembly(baseType).GetTypes();
-            var derivedTypes = from type in types
-                               where type.IsSubclassOf(baseType)
-                               select type;
-            foreach (Type item in derivedTypes)
-            {
-                typeList.Add(item);
-            }
-            return typeList.ToArray();
         }        
 
         private void Strings_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -128,20 +97,13 @@ namespace Scale_Trainer
 
         private void GetInstrumentList()
         {
-            instrumentList = new List<string>(3);
-            Type[] derivedTypes = GetSubclasses(typeof(StringedInstrument));
-            foreach (Type type in derivedTypes)
-            {
-                NameAttribute attr = (NameAttribute)type.GetCustomAttribute(typeof(NameAttribute));
-                if(attr != null) 
-                    instrumentList.Add(attr.Name);
-            }                        
-            Instrument.ItemsSource = instrumentList.ToArray();
+            Instrument.ItemsSource = Util.GetNameAttributes();
         }
 
         private void GetScaleList()
         {
             Scales.ItemsSource = DataExchange.GetScaleListFromXml();
+            Scales.SelectedItem = 1;
         }
 
         private void GetTuningList(string engName, string strings)
@@ -162,6 +124,6 @@ namespace Scale_Trainer
             {
                 Key.Items.Add(key);
             }
-        }
+        }        
     }
 }
