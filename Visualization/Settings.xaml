@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Scale_Trainer"
         mc:Ignorable="d"
-        Title="Settings" Height="400" Width="600" ResizeMode="NoResize">
+        Title="Settings" Height="400" Width="600" ResizeMode="NoResize" Closing="Window_Closing">
     <Grid Background="{StaticResource Backgroung}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>

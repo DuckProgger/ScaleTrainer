@@ -126,6 +126,12 @@ namespace Scale_Trainer
                 string strKey = key.ToString().Replace("_sh", "#");
                 Key.Items.Add(strKey);
             }
-        }        
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            e.Cancel = true;
+            Visibility = Visibility.Hidden;
+        }
     }
 }
