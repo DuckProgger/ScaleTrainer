@@ -18,7 +18,8 @@ namespace Scale_Trainer
             CreateNeckColumns(maxFrets);
             settingsWindow = new Settings();
             ParameterChanged += TryCreateVisualization;
-            projectPath = Environment.CurrentDirectory;
+            CreateNeckImage(6);
+            CreateSettingsImage();
         }
 
         internal int? SelectedStrings { get; set; }
@@ -27,7 +28,6 @@ namespace Scale_Trainer
         internal string SelectedTuning { get; set; }
         internal string SelectedScale { get; set; }
         internal Note.NoteName selectedKey;
-        internal string projectPath;
 
         private StringedInstrument Instrument { get; set; }
         private Scale scale;
@@ -69,7 +69,7 @@ namespace Scale_Trainer
                 scale = new Scale(SelectedScale, selectedKey);
                 guitarVis = new Neck(Instrument, scale);
                 ClearNeck();
-                ChangeNeckImage(SelectedStrings.Value);
+                CreateNeckImage(SelectedStrings.Value);
                 CreateNeckRows(SelectedStrings.Value);
                 CreateNutRows(SelectedStrings.Value);
                 CreateFretsOnNeck(SelectedStrings.Value, SelectedFrets.Value);
@@ -186,20 +186,21 @@ namespace Scale_Trainer
             }
         }
 
-        private void ChangeNeckImage(int strings)
+        private void CreateNeckImage(int strings)
         {            
             StringBuilder neckSource = new StringBuilder(40);
-            neckSource.Append(projectPath);
             neckSource.Append(@"\data\Necks\");
             neckSource.Append(strings.ToString());
             neckSource.Append("strings.png");
-
-            BitmapImage neckImage = new BitmapImage();
-            neckImage.BeginInit();
-            neckImage.UriSource = new Uri(neckSource.ToString());
-            neckImage.EndInit();
+            BitmapImage neckImage = Util.CreateImage(neckSource.ToString());
             NeckImage.Source = neckImage;
         }
+
+        private void CreateSettingsImage()
+        {
+            BitmapImage neckImage = Util.CreateImage(@"\data\Settings.png");
+            SettingImage.Source = neckImage;
+        }        
 
         private void Settings_Click(object sender, RoutedEventArgs e)
         {
@@ -208,7 +209,7 @@ namespace Scale_Trainer
                 settingsWindow.Show();
             }
             else settingsWindow.Activate();
-        }
+        }             
 
         protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
         {

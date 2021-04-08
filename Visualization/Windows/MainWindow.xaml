@@ -12,7 +12,7 @@
 
         <Grid Grid.Column="0">
             <Button MaxHeight="30" MaxWidth="30" Background="#FF90A6E2" Click="Settings_Click">
-                <Image Source="Settings.png"/>
+                <Image x:Name="SettingImage"/>
             </Button>
         </Grid>
 
@@ -22,7 +22,7 @@
                 <ColumnDefinition Width="0.02*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Image Name="NeckImage" Source="Neck.png"  Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" />
+            <Image Name="NeckImage" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" />
             <Grid Name="Nut"  Grid.Column="0"/>
             <Grid Name="Neck" Grid.Column="1"/>
         </Grid>

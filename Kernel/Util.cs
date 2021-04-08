@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Windows.Media.Imaging;
 
 namespace Scale_Trainer
 {
@@ -46,6 +47,16 @@ namespace Scale_Trainer
                 typeList.Add(item);
             }
             return typeList.ToArray();
+        }
+
+        public static BitmapImage CreateImage(string path)
+        {
+            string projectPath = Environment.CurrentDirectory;
+            BitmapImage image = new BitmapImage();
+            image.BeginInit();
+            image.UriSource = new Uri(projectPath + path);
+            image.EndInit();
+            return image;
         }
     }
 }
