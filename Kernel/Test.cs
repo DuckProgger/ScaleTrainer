@@ -8,7 +8,7 @@ namespace Scale_Trainer
         {
             Guitar guitar = new Guitar(6, 24, "Standard");
             Scale scale = new Scale("Major", Note.NoteName.D);
-            StringedVisualisation giutarVis = new StringedVisualisation(guitar, scale);
+            Neck giutarVis = new Neck(guitar, scale);
 
             ShowNeck(giutarVis.AvailableFrets);
             CalcKoeff(1.0);

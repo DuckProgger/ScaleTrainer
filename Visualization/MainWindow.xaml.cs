@@ -31,7 +31,7 @@ namespace Scale_Trainer
 
         private StringedInstrument Instrument { get; set; }
         private Scale scale;
-        private StringedVisualisation guitarVis;
+        private Neck guitarVis;
         private int fret = 0;
         private double[] fretRanges;
         private readonly int maxFrets = 24;
@@ -67,7 +67,7 @@ namespace Scale_Trainer
                         throw new NotImplementedException();
                 }               
                 scale = new Scale(SelectedScale, selectedKey);
-                guitarVis = new StringedVisualisation(Instrument, scale);
+                guitarVis = new Neck(Instrument, scale);
                 ClearNeck();
                 ChangeNeckImage(SelectedStrings.Value);
                 CreateNeckRows(SelectedStrings.Value);

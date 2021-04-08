@@ -91,7 +91,8 @@ namespace Scale_Trainer
 
         private void Key_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            main.selectedKey = (Note.NoteName)((ComboBox)sender).SelectedItem;
+            string item = (string)((ComboBox)sender).SelectedItem;
+            main.selectedKey = Note.StringToNoteName(item);
             main.InvokeParameterChangedEvent();
         }
 
@@ -122,7 +123,8 @@ namespace Scale_Trainer
         {
             for (Note.NoteName key = Note.NoteName.C; key <= Note.NoteName.B; key++)
             {
-                Key.Items.Add(key);
+                string strKey = key.ToString().Replace("_sh", "#");
+                Key.Items.Add(strKey);
             }
         }        
     }

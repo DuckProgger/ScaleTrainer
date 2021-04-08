@@ -2,14 +2,14 @@
 
 namespace Scale_Trainer
 {
-    internal sealed class StringedVisualisation
+    internal sealed class Neck
     {
         public bool[,] AvailableFrets { get; private set; } // Доступные лады в соответствии с гаммой и строем гитары
         private Note[,] notes; // Ноты на грифе	с учётом строя
         private readonly StringedInstrument instrument;
         private readonly Scale scale;
 
-        public StringedVisualisation(StringedInstrument instrument, Scale scale)
+        public Neck(StringedInstrument instrument, Scale scale)
         {
             this.instrument = instrument;
             this.scale = scale;
