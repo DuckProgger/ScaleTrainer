@@ -7,8 +7,6 @@ using System.Text;
 
 namespace Scale_Trainer
 {
-    public delegate void StringsChangedHandler(int strings);
-
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
     /// </summary>
@@ -39,8 +37,10 @@ namespace Scale_Trainer
         private int fret = 0;
         private double[] fretRanges;
         private readonly int maxFrets = 24;
-        private Settings settingsWindow;
+        private readonly Settings settingsWindow;
         private double scaleFactor;
+
+        public delegate void StringsChangedHandler(int strings);
 
         public event EventHandler ParameterChanged;
         public event StringsChangedHandler StringsChanged;
