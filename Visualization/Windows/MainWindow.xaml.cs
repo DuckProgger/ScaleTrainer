@@ -7,6 +7,8 @@ using System.Text;
 
 namespace Scale_Trainer
 {
+    public delegate void StringsChangedHandler(int strings);
+
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
     /// </summary>
@@ -18,11 +20,13 @@ namespace Scale_Trainer
             CreateNeckColumns(maxFrets);
             settingsWindow = new Settings();
             ParameterChanged += TryCreateVisualization;
-            CreateNeckImage(6);
+            StringsChanged += CreateNeckImage;
+            StringsChanged += CalcScaleFactor;
+            InvokeStringsChangedEvent(SelectedStrings);
             CreateSettingsImage();
         }
 
-        internal int? SelectedStrings { get; set; }
+        internal int SelectedStrings { get; set; } = 6;
         internal int? SelectedFrets { get; set; }
         internal Type SelectedInstrument { get; set; }
         internal string SelectedTuning { get; set; }
@@ -36,8 +40,10 @@ namespace Scale_Trainer
         private double[] fretRanges;
         private readonly int maxFrets = 24;
         private Settings settingsWindow;
+        private double scaleFactor;
 
         public event EventHandler ParameterChanged;
+        public event StringsChangedHandler StringsChanged;
 
         private void TryCreateVisualization(object sender, EventArgs e)
         {
@@ -58,10 +64,10 @@ namespace Scale_Trainer
                 switch (SelectedInstrument.Name)
                 {
                     case nameof(Guitar):
-                        Instrument = new Guitar(SelectedStrings.Value, SelectedFrets.Value, SelectedTuning);
+                        Instrument = new Guitar(SelectedStrings, SelectedFrets.Value, SelectedTuning);
                         break;
                     case nameof(Bass):
-                        Instrument = new Bass(SelectedStrings.Value, SelectedFrets.Value, SelectedTuning);
+                        Instrument = new Bass(SelectedStrings, SelectedFrets.Value, SelectedTuning);
                         break;
                     default:
                         throw new NotImplementedException();
@@ -69,11 +75,11 @@ namespace Scale_Trainer
                 scale = new Scale(SelectedScale, selectedKey);
                 guitarVis = new Neck(Instrument, scale);
                 ClearNeck();
-                CreateNeckImage(SelectedStrings.Value);
-                CreateNeckRows(SelectedStrings.Value);
-                CreateNutRows(SelectedStrings.Value);
-                CreateFretsOnNeck(SelectedStrings.Value, SelectedFrets.Value);
-                CreateFretsOnNut(SelectedStrings.Value);
+                
+                CreateNeckRows(SelectedStrings);
+                CreateNutRows(SelectedStrings);
+                CreateFretsOnNeck(SelectedStrings, SelectedFrets.Value);
+                CreateFretsOnNut(SelectedStrings);
             }
         }
 
@@ -82,11 +88,16 @@ namespace Scale_Trainer
             ParameterChanged?.Invoke(this, EventArgs.Empty);
         }
 
+        public void InvokeStringsChangedEvent(int strings)
+        {
+            StringsChanged?.Invoke(strings);
+        }
+
         private bool AllParametersSet()
         {
-            return SelectedInstrument != null && SelectedStrings.HasValue && SelectedFrets.HasValue &&
+            return SelectedInstrument != null && SelectedFrets.HasValue &&
                 SelectedTuning != null && SelectedScale != null && selectedKey != 0;
-        }
+        }       
 
         private void CreateNeckColumns(int number)
         {
@@ -198,8 +209,7 @@ namespace Scale_Trainer
 
         private void CreateSettingsImage()
         {
-            BitmapImage neckImage = Util.CreateImage(@"\data\Settings.png");
-            SettingImage.Source = neckImage;
+            SettingImage.Source = Util.CreateImage(@"\data\Settings.png");
         }        
 
         private void Settings_Click(object sender, RoutedEventArgs e)
@@ -209,11 +219,18 @@ namespace Scale_Trainer
                 settingsWindow.Show();
             }
             else settingsWindow.Activate();
-        }             
+        }
+
+        private void CalcScaleFactor(int strings)
+        {
+            int newHeight = 146 + (strings - 4) * 27;
+            scaleFactor = Math.Log(newHeight, 1270);
+            Height = newHeight;
+        }
 
         protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
         {
-            Height = Math.Pow(Width, 0.725);
+            Height = Math.Pow(Width, scaleFactor);
         }
     }
 }

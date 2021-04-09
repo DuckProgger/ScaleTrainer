@@ -1,7 +1,7 @@
 ﻿<Window x:Class="Scale_Trainer.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"       
-        Title="Визуализатор гамм" Height="200" Width="1550" MinWidth="962" MinHeight="143" ScrollViewer.VerticalScrollBarVisibility="Disabled" Visibility="Visible" WindowStartupLocation="CenterScreen" >
+        Title="Визуализатор гамм" Height="200" Width="1270" MinWidth="1224" MinHeight="143" ScrollViewer.VerticalScrollBarVisibility="Disabled" WindowStartupLocation="CenterScreen" >
 
     <Grid x:Name="LayoutRoot" Background="{StaticResource Backgroung}" >
 

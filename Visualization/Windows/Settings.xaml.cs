@@ -59,11 +59,12 @@ namespace Scale_Trainer
         private void Strings_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             strings = (string)((ComboBox)sender).SelectedItem;
-            if (int.TryParse(strings, out int temp))
+            if (int.TryParse(strings, out int intStrings))
             {
-                main.SelectedStrings = temp;
+                main.SelectedStrings = intStrings;
+                main.InvokeStringsChangedEvent(intStrings);
             }
-            GetTuningList(instrumentType.Name, strings);
+            GetTuningList(instrumentType.Name, strings);           
             main.InvokeParameterChangedEvent();
         }
 
